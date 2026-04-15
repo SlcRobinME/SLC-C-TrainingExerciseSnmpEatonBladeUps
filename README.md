@@ -4,13 +4,19 @@
 
 * Create the initial version protocol for the device EATON Blade UPS.\
 The connector should meet delivery standards.
+  * Cleaned up code and comments
+  * Solved all DIS validator remarks
+  * Protocol Parameters are:
+    1. fully specified (good name, description, subtext, ranges, units, decimals, discrete options, ...)
+    2. alarming/trending taken into account + default thresholds foreseen
+  * No errors are visible in the element log file
 
 ## Setup
 
 * The provided SNMP MIB files of the EATON Blade UPS are in the Documentation folder and load them into the DIS MIB browser in Visual Studio.\
 This tool should be used to construct the connector.
 * Load the provided simulation file which is available in the Documentation folder using the QA Device Simulation Tool\
-[How to: Running Simulations](https://docs.dataminer.services/user-guide/Reference/DataMiner_Tools/QADeviceSimulator/Running_simulations.html?q=QASNMP)
+[How to: Running Simulations](https://docs.dataminer.services/dataminer/DataMiner_Tools/QADeviceSimulator/Running_simulations.html)
 
 ## Connector Layout
 
