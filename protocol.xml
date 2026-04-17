@@ -8,7 +8,7 @@
 -->
 
 <Protocol xmlns="http://www.skyline.be/protocol">
-	<Name>Exercise SNMP Eaton Blade UPS</Name>
+	<Name>Exercise SNMP Eaton Blade UPS Amer Mujalo</Name>
 	<Description>Exercise SNMP Eaton Blade UPS DataMiner connector</Description>
 	<Version>1.0.0.1</Version>
 	<IntegrationID>DMS-DRV-0001</IntegrationID>
@@ -18,107 +18,1779 @@
 	<DeviceOID>1</DeviceOID>
 	<ElementType>Manager</ElementType>
 	<Type relativeTimers="true">snmpv2</Type>
-	<Display defaultPage="General" pageOrder="General"/>
+	<Display defaultPage="General" pageOrder="General;----------;Interface;UPS" wideColumnPages=""/>
 	<SNMP includepages="true">auto</SNMP>
-
 	<Compliancies>
 		<CassandraReady>true</CassandraReady>
 		<MinimumRequiredVersion>10.4.0.0 - 14003</MinimumRequiredVersion>
 	</Compliancies>
-
 	<Params>
-		<Param id="2">
-			<Name>AfterStartup</Name>
-			<Description>After Startup</Description>
-			<Type>dummy</Type>
+		<!--General Parameters-->
+		<Param id="1000" trending="false">
+			<Name>sysDescr</Name>
+			<Description>System Description</Description>
+			<Information>
+				<Subtext>
+					<![CDATA[A textual description of the entity.  This value should
+include the full name and version identification of
+the system's hardware type, software operating-system,
+and networking software.]]>
+				</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>other</RawType>
+				<Type>string</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.2.1.1.1.0</OID>
+				<Type>octetstring</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Range>
+					<Low>0</Low>
+					<High>255</High>
+				</Range>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>0</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type lines="7">string</Type>
+			</Measurement>
+		</Param>
+		<Param id="1001" trending="false">
+			<Name>sysUpTime</Name>
+			<Description>System up Time</Description>
+			<Information>
+				<Subtext>
+					<![CDATA[The time (in hundredths of a second) since the
+network management portion of the system was last
+re-initialized.]]>
+				</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
+				<LengthType>next param</LengthType>
+				<Sequence noset="true">
+					div:100
+				</Sequence>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.2.1.1.3.0</OID>
+				<Type>timeticks</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>1</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="time">number</Type>
+			</Measurement>
+		</Param>
+		<Param id="1002" trending="false">
+			<Name>xupsIdentManufacturer</Name>
+			<Description>Xups Ident Manufacturer</Description>
+			<Information>
+				<Subtext>
+					<![CDATA[The UPS Manufacturer Name (e.g. Eaton Corporation).]]>
+				</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>other</RawType>
+				<Type>string</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.534.1.1.1.0</OID>
+				<Type>octetstring</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Range>
+					<Low>0</Low>
+					<High>31</High>
+				</Range>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>2</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>string</Type>
+			</Measurement>
+		</Param>
+		<Param id="1003" trending="false">
+			<Name>xupsIdentModel</Name>
+			<Description>Xups Ident Model</Description>
+			<Information>
+				<Subtext>
+					<![CDATA[The UPS Model (e.g. Powerware Plus Model 18).]]>
+				</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>other</RawType>
+				<Type>string</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.534.1.1.2.0</OID>
+				<Type>octetstring</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Range>
+					<Low>0</Low>
+					<High>63</High>
+				</Range>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>3</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>string</Type>
+			</Measurement>
+		</Param>
+		<!--Interface Table-->
+		<Param id="2000" trending="false">
+			<Name>ifTable</Name>
+			<Description>If</Description>
+			<Type>array</Type>
+			<ArrayOptions index="0">
+				<ColumnOption idx="0" pid="2001" type="snmp" options="" />
+				<ColumnOption idx="1" pid="2002" type="snmp" options="" />
+				<ColumnOption idx="2" pid="2003" type="snmp" options="" />
+				<ColumnOption idx="3" pid="2004" type="snmp" options="" />
+				<ColumnOption idx="4" pid="2502" type="snmp" options="" />
+			</ArrayOptions>
+			<Information>
+				<Subtext>
+					<![CDATA[A list of interface entries.  The number of entries
+is given by the value of ifNumber.]]>
+				</Subtext>
+			</Information>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete" options="instance;multipleGetNext">1.3.6.1.2.1.2.2</OID>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>Interface</Page>
+						<Column>0</Column>
+						<Row>0</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="tab=columns:2001|0-2002|1-2003|2-2004|3-2502|4,width:100-195-100-100-127,sort:INT-INT-INT-INT-INT,lines:20,filter:true">table</Type>
+			</Measurement>
+		</Param>
+		<Param id="2001" trending="false">
+			<Name>ifTableIndex</Name>
+			<Description>Index [IDX] (If)</Description>
+			<Information>
+				<Subtext>
+					<![CDATA[This is the SNMP instance of the table. Format: [ifIndex].
+
+ - ifIndex: A unique value, greater than zero, for each
+interface.  It is recommended that values are assigned
+contiguously starting from 1.  The value for each
+interface sub-layer must remain constant at least from
+one re-initialization of the entity's network
+management system to the next re-initialization.
+]]>
+				</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>other</RawType>
+				<Type>string</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Measurement>
+				<Type>string</Type>
+			</Measurement>
+		</Param>
+		<Param id="2002" trending="false">
+			<Name>ifTableType</Name>
+			<Description>Type (If)</Description>
+			<Information>
+				<Subtext>
+					<![CDATA[The type of interface.  Additional values for ifType
+are assigned by the Internet Assigned Numbers
+Authority (IANA), through updating the syntax of the
+IANAifType textual convention.]]>
+				</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.2.1.2.2.1.3</OID>
+				<Type>integer</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Other</Display>
+						<Value>1</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Regular 1822</Display>
+						<Value>2</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Hdh 1822</Display>
+						<Value>3</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Ddn X 25</Display>
+						<Value>4</Value>
+					</Discreet>
+					<Discreet>
+						<Display>RFC 877 X 25</Display>
+						<Value>5</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Ethernet Csmacd</Display>
+						<Value>6</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Iso 88023 Csmacd</Display>
+						<Value>7</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Iso 88024 Token Bus</Display>
+						<Value>8</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Iso 88025 Token Ring</Display>
+						<Value>9</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Iso 88026 Man</Display>
+						<Value>10</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Star LAN</Display>
+						<Value>11</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Proteon 10 Mbit</Display>
+						<Value>12</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Proteon 80 Mbit</Display>
+						<Value>13</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Hyperchannel</Display>
+						<Value>14</Value>
+					</Discreet>
+					<Discreet>
+						<Display>FDDI</Display>
+						<Value>15</Value>
+					</Discreet>
+					<Discreet>
+						<Display>LAPB</Display>
+						<Value>16</Value>
+					</Discreet>
+					<Discreet>
+						<Display>SDLC</Display>
+						<Value>17</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Ds 1</Display>
+						<Value>18</Value>
+					</Discreet>
+					<Discreet>
+						<Display>E 1</Display>
+						<Value>19</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Basic ISDN</Display>
+						<Value>20</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Primary ISDN</Display>
+						<Value>21</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Prop Point to Point Serial</Display>
+						<Value>22</Value>
+					</Discreet>
+					<Discreet>
+						<Display>PPP</Display>
+						<Value>23</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Software Loopback</Display>
+						<Value>24</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Eon</Display>
+						<Value>25</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Ethernet 3 Mbit</Display>
+						<Value>26</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Nsip</Display>
+						<Value>27</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Slip</Display>
+						<Value>28</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Ultra</Display>
+						<Value>29</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Ds 3</Display>
+						<Value>30</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Sip</Display>
+						<Value>31</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Frame Relay</Display>
+						<Value>32</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Rs 232</Display>
+						<Value>33</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Para</Display>
+						<Value>34</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Arcnet</Display>
+						<Value>35</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Arcnet Plus</Display>
+						<Value>36</Value>
+					</Discreet>
+					<Discreet>
+						<Display>ATM</Display>
+						<Value>37</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Miox 25</Display>
+						<Value>38</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Sonet</Display>
+						<Value>39</Value>
+					</Discreet>
+					<Discreet>
+						<Display>X 25 Ple</Display>
+						<Value>40</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Iso 88022 LLC</Display>
+						<Value>41</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Local Talk</Display>
+						<Value>42</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Smds Dxi</Display>
+						<Value>43</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Frame Relay Service</Display>
+						<Value>44</Value>
+					</Discreet>
+					<Discreet>
+						<Display>V 35</Display>
+						<Value>45</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Hssi</Display>
+						<Value>46</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Hippi</Display>
+						<Value>47</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Modem</Display>
+						<Value>48</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Aal 5</Display>
+						<Value>49</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Sonet Path</Display>
+						<Value>50</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Sonet VT</Display>
+						<Value>51</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Smds Icip</Display>
+						<Value>52</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Prop Virtual</Display>
+						<Value>53</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Prop Multiplexor</Display>
+						<Value>54</Value>
+					</Discreet>
+					<Discreet>
+						<Display>IEEE 80212</Display>
+						<Value>55</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Fibre Channel</Display>
+						<Value>56</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Hippi Interface</Display>
+						<Value>57</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Frame Relay Interconnect</Display>
+						<Value>58</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Aflane 8023</Display>
+						<Value>59</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Aflane 8025</Display>
+						<Value>60</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Cct Emul</Display>
+						<Value>61</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Fast Ether</Display>
+						<Value>62</Value>
+					</Discreet>
+					<Discreet>
+						<Display>ISDN</Display>
+						<Value>63</Value>
+					</Discreet>
+					<Discreet>
+						<Display>V 11</Display>
+						<Value>64</Value>
+					</Discreet>
+					<Discreet>
+						<Display>V 36</Display>
+						<Value>65</Value>
+					</Discreet>
+					<Discreet>
+						<Display>G 703 at 64 K</Display>
+						<Value>66</Value>
+					</Discreet>
+					<Discreet>
+						<Display>G 703 at 2 Mb</Display>
+						<Value>67</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Qllc</Display>
+						<Value>68</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Fast Ether FX</Display>
+						<Value>69</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Channel</Display>
+						<Value>70</Value>
+					</Discreet>
+					<Discreet>
+						<Display>IEEE 80211</Display>
+						<Value>71</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Ibm 370 Par Chan</Display>
+						<Value>72</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Escon</Display>
+						<Value>73</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Dlsw</Display>
+						<Value>74</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Isdns</Display>
+						<Value>75</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Isdnu</Display>
+						<Value>76</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Lapd</Display>
+						<Value>77</Value>
+					</Discreet>
+					<Discreet>
+						<Display>IP Switch</Display>
+						<Value>78</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Rsrb</Display>
+						<Value>79</Value>
+					</Discreet>
+					<Discreet>
+						<Display>ATM Logical</Display>
+						<Value>80</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Ds 0</Display>
+						<Value>81</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Ds 0 Bundle</Display>
+						<Value>82</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Bsc</Display>
+						<Value>83</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Async</Display>
+						<Value>84</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Cnr</Display>
+						<Value>85</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Iso 88025 Dtr</Display>
+						<Value>86</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Eplrs</Display>
+						<Value>87</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Arap</Display>
+						<Value>88</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Prop Cnls</Display>
+						<Value>89</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Host Pad</Display>
+						<Value>90</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Term Pad</Display>
+						<Value>91</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Frame Relay MPI</Display>
+						<Value>92</Value>
+					</Discreet>
+					<Discreet>
+						<Display>X 213</Display>
+						<Value>93</Value>
+					</Discreet>
+					<Discreet>
+						<Display>ADSL</Display>
+						<Value>94</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Radsl</Display>
+						<Value>95</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Sdsl</Display>
+						<Value>96</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Vdsl</Display>
+						<Value>97</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Iso 88025 CRFP Int</Display>
+						<Value>98</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Myrinet</Display>
+						<Value>99</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Voice EM</Display>
+						<Value>100</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Voice FXO</Display>
+						<Value>101</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Voice FXS</Display>
+						<Value>102</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Voice Encap</Display>
+						<Value>103</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Voice Over IP</Display>
+						<Value>104</Value>
+					</Discreet>
+					<Discreet>
+						<Display>ATM Dxi</Display>
+						<Value>105</Value>
+					</Discreet>
+					<Discreet>
+						<Display>ATM Funi</Display>
+						<Value>106</Value>
+					</Discreet>
+					<Discreet>
+						<Display>ATM Ima</Display>
+						<Value>107</Value>
+					</Discreet>
+					<Discreet>
+						<Display>PPP Multilink Bundle</Display>
+						<Value>108</Value>
+					</Discreet>
+					<Discreet>
+						<Display>IP Over Cdlc</Display>
+						<Value>109</Value>
+					</Discreet>
+					<Discreet>
+						<Display>IP Over Claw</Display>
+						<Value>110</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Stack to Stack</Display>
+						<Value>111</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Virtual IP Address</Display>
+						<Value>112</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Mpc</Display>
+						<Value>113</Value>
+					</Discreet>
+					<Discreet>
+						<Display>IP Over ATM</Display>
+						<Value>114</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Iso 88025 Fiber</Display>
+						<Value>115</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Tdlc</Display>
+						<Value>116</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Gigabit Ethernet</Display>
+						<Value>117</Value>
+					</Discreet>
+					<Discreet>
+						<Display>HDLC</Display>
+						<Value>118</Value>
+					</Discreet>
+					<Discreet>
+						<Display>LAPF</Display>
+						<Value>119</Value>
+					</Discreet>
+					<Discreet>
+						<Display>V 37</Display>
+						<Value>120</Value>
+					</Discreet>
+					<Discreet>
+						<Display>X 25 Mlp</Display>
+						<Value>121</Value>
+					</Discreet>
+					<Discreet>
+						<Display>X 25 Hunt Group</Display>
+						<Value>122</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Transp HDLC</Display>
+						<Value>123</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Interleave</Display>
+						<Value>124</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Fast</Display>
+						<Value>125</Value>
+					</Discreet>
+					<Discreet>
+						<Display>IP</Display>
+						<Value>126</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Docs Cable Maclayer</Display>
+						<Value>127</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Docs Cable Downstream</Display>
+						<Value>128</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Docs Cable Upstream</Display>
+						<Value>129</Value>
+					</Discreet>
+					<Discreet>
+						<Display>A 12 Mpp Switch</Display>
+						<Value>130</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Tunnel</Display>
+						<Value>131</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Coffee</Display>
+						<Value>132</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Ces</Display>
+						<Value>133</Value>
+					</Discreet>
+					<Discreet>
+						<Display>ATM Sub Interface</Display>
+						<Value>134</Value>
+					</Discreet>
+					<Discreet>
+						<Display>L 2 VLAN</Display>
+						<Value>135</Value>
+					</Discreet>
+					<Discreet>
+						<Display>L 3 Ipvlan</Display>
+						<Value>136</Value>
+					</Discreet>
+					<Discreet>
+						<Display>L 3 Ipxvlan</Display>
+						<Value>137</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Digital Powerline</Display>
+						<Value>138</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Media Mail Over IP</Display>
+						<Value>139</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Dtm</Display>
+						<Value>140</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Dcn</Display>
+						<Value>141</Value>
+					</Discreet>
+					<Discreet>
+						<Display>IP Forward</Display>
+						<Value>142</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Msdsl</Display>
+						<Value>143</Value>
+					</Discreet>
+					<Discreet>
+						<Display>IEEE 1394</Display>
+						<Value>144</Value>
+					</Discreet>
+					<Discreet>
+						<Display>If Gsn</Display>
+						<Value>145</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Dvb Rcc MAC Layer</Display>
+						<Value>146</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Dvb Rcc Downstream</Display>
+						<Value>147</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Dvb Rcc Upstream</Display>
+						<Value>148</Value>
+					</Discreet>
+					<Discreet>
+						<Display>ATM Virtual</Display>
+						<Value>149</Value>
+					</Discreet>
+					<Discreet>
+						<Display>MPLS Tunnel</Display>
+						<Value>150</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Srp</Display>
+						<Value>151</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Voice Over ATM</Display>
+						<Value>152</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Voice Over Frame Relay</Display>
+						<Value>153</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Idsl</Display>
+						<Value>154</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Composite Link</Display>
+						<Value>155</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Ss 7 Sig Link</Display>
+						<Value>156</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Prop Wireless P 2 P</Display>
+						<Value>157</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Fr Forward</Display>
+						<Value>158</Value>
+					</Discreet>
+					<Discreet>
+						<Display>RFC 1483</Display>
+						<Value>159</Value>
+					</Discreet>
+					<Discreet>
+						<Display>USB</Display>
+						<Value>160</Value>
+					</Discreet>
+					<Discreet>
+						<Display>IEEE 8023 Ad Lag</Display>
+						<Value>161</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Bgppolicyaccounting</Display>
+						<Value>162</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Frf 16 Mfr Bundle</Display>
+						<Value>163</Value>
+					</Discreet>
+					<Discreet>
+						<Display>H 323 Gatekeeper</Display>
+						<Value>164</Value>
+					</Discreet>
+					<Discreet>
+						<Display>H 323 Proxy</Display>
+						<Value>165</Value>
+					</Discreet>
+					<Discreet>
+						<Display>MPLS</Display>
+						<Value>166</Value>
+					</Discreet>
+					<Discreet>
+						<Display>MF Sig Link</Display>
+						<Value>167</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Hdsl 2</Display>
+						<Value>168</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Shdsl</Display>
+						<Value>169</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Ds 1 FDL</Display>
+						<Value>170</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Pos</Display>
+						<Value>171</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Dvb Asi In</Display>
+						<Value>172</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Dvb Asi Out</Display>
+						<Value>173</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Plc</Display>
+						<Value>174</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Nfas</Display>
+						<Value>175</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Tr 008</Display>
+						<Value>176</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Gr 303 RDT</Display>
+						<Value>177</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Gr 303 IDT</Display>
+						<Value>178</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Isup</Display>
+						<Value>179</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Prop Docs Wireless Maclayer</Display>
+						<Value>180</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Prop Docs Wireless Downstream</Display>
+						<Value>181</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Prop Docs Wireless Upstream</Display>
+						<Value>182</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Hiperlan 2</Display>
+						<Value>183</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Prop BW Ap 2 Mp</Display>
+						<Value>184</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Sonet Overhead Channel</Display>
+						<Value>185</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Digital Wrapper Overhead Channel</Display>
+						<Value>186</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Aal 2</Display>
+						<Value>187</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Radio MAC</Display>
+						<Value>188</Value>
+					</Discreet>
+					<Discreet>
+						<Display>ATM Radio</Display>
+						<Value>189</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Imt</Display>
+						<Value>190</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Mvl</Display>
+						<Value>191</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Reach DSL</Display>
+						<Value>192</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Fr Dlci End Pt</Display>
+						<Value>193</Value>
+					</Discreet>
+					<Discreet>
+						<Display>ATM Vci End Pt</Display>
+						<Value>194</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Optical Channel</Display>
+						<Value>195</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Optical Transport</Display>
+						<Value>196</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Prop ATM</Display>
+						<Value>197</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Voice Over Cable</Display>
+						<Value>198</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Infiniband</Display>
+						<Value>199</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Te Link</Display>
+						<Value>200</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Q 2931</Display>
+						<Value>201</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Virtual Tg</Display>
+						<Value>202</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Sip Tg</Display>
+						<Value>203</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Sip Sig</Display>
+						<Value>204</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Docs Cable Upstream Channel</Display>
+						<Value>205</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Econet</Display>
+						<Value>206</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Pon 155</Display>
+						<Value>207</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Pon 622</Display>
+						<Value>208</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Bridge</Display>
+						<Value>209</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Linegroup</Display>
+						<Value>210</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Voice EMFGD</Display>
+						<Value>211</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Voice FGDEANA</Display>
+						<Value>212</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Voice DID</Display>
+						<Value>213</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Mpeg Transport</Display>
+						<Value>214</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Six to Four</Display>
+						<Value>215</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Gtp</Display>
+						<Value>216</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Pdn Ether Loop 1</Display>
+						<Value>217</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Pdn Ether Loop 2</Display>
+						<Value>218</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Optical Channel Group</Display>
+						<Value>219</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Homepna</Display>
+						<Value>220</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Gfp</Display>
+						<Value>221</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Cisco IS Lvlan</Display>
+						<Value>222</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Actelis Meta LOOP</Display>
+						<Value>223</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Fcip Link</Display>
+						<Value>224</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Rpr</Display>
+						<Value>225</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Qam</Display>
+						<Value>226</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Lmp</Display>
+						<Value>227</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Cbl Vecta Star</Display>
+						<Value>228</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Docs Cable M Cmts Downstream</Display>
+						<Value>229</Value>
+					</Discreet>
+					<Discreet>
+						<Display>ADSL 2</Display>
+						<Value>230</Value>
+					</Discreet>
+					<Discreet>
+						<Display>MAC Sec Controlled IF</Display>
+						<Value>231</Value>
+					</Discreet>
+					<Discreet>
+						<Display>MAC Sec Uncontrolled IF</Display>
+						<Value>232</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Avici Optical Ether</Display>
+						<Value>233</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Atmbond</Display>
+						<Value>234</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Voice FGDOS</Display>
+						<Value>235</Value>
+					</Discreet>
+					<Discreet>
+						<Display>MoCA Version 1</Display>
+						<Value>236</Value>
+					</Discreet>
+					<Discreet>
+						<Display>IEEE 80216 WMAN</Display>
+						<Value>237</Value>
+					</Discreet>
+					<Discreet>
+						<Display>ADSL 2 Plus</Display>
+						<Value>238</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Dvb Rcs MAC Layer</Display>
+						<Value>239</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Dvb TDM</Display>
+						<Value>240</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Dvb Rcs Tdma</Display>
+						<Value>241</Value>
+					</Discreet>
+					<Discreet>
+						<Display>X 86 Laps</Display>
+						<Value>242</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Wwan PP</Display>
+						<Value>243</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Wwan PP 2</Display>
+						<Value>244</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Voice EBS</Display>
+						<Value>245</Value>
+					</Discreet>
+					<Discreet>
+						<Display>If PW Type</Display>
+						<Value>246</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Ilan</Display>
+						<Value>247</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Pip</Display>
+						<Value>248</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Alu ELP</Display>
+						<Value>249</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Gpon</Display>
+						<Value>250</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Vdsl 2</Display>
+						<Value>251</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Capwap Dot 11 Profile</Display>
+						<Value>252</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Capwap Dot 11 BSS</Display>
+						<Value>253</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Capwap Wtp Virtual Radio</Display>
+						<Value>254</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Bits</Display>
+						<Value>255</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Docs Cable Upstream Rf Port</Display>
+						<Value>256</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Cable Downstream Rf Port</Display>
+						<Value>257</Value>
+					</Discreet>
+					<Discreet>
+						<Display>VMware Virtual NIC</Display>
+						<Value>258</Value>
+					</Discreet>
+					<Discreet>
+						<Display>IEEE 802154</Display>
+						<Value>259</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Otn Odu</Display>
+						<Value>260</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Otn Otu</Display>
+						<Value>261</Value>
+					</Discreet>
+					<Discreet>
+						<Display>If Vfi Type</Display>
+						<Value>262</Value>
+					</Discreet>
+					<Discreet>
+						<Display>G 9981</Display>
+						<Value>263</Value>
+					</Discreet>
+					<Discreet>
+						<Display>G 9982</Display>
+						<Value>264</Value>
+					</Discreet>
+					<Discreet>
+						<Display>G 9983</Display>
+						<Value>265</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Alu Epon</Display>
+						<Value>266</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Alu Epon Onu</Display>
+						<Value>267</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Alu Epon Physical Uni</Display>
+						<Value>268</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Alu Epon Logical Link</Display>
+						<Value>269</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Alu Gpon Onu</Display>
+						<Value>270</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Alu Gpon Physical Uni</Display>
+						<Value>271</Value>
+					</Discreet>
+					<Discreet>
+						<Display>VMware NIC Team</Display>
+						<Value>272</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Docs Ofdm Downstream</Display>
+						<Value>277</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Docs Ofdma Upstream</Display>
+						<Value>278</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="2003" trending="false">
+			<Name>ifTableSpeed</Name>
+			<Description>Speed (If)</Description>
+			<Information>
+				<Subtext>
+					<![CDATA[An estimate of the interface's current bandwidth in
+bits per second.  For interfaces which do not vary in
+bandwidth or for those where no accurate estimation
+can be made, this object should contain the nominal
+bandwidth.  If the bandwidth of the interface is
+greater than the maximum value reportable by this
+object then this object should report its maximum
+value (4,294,967,295) and ifHighSpeed must be used to
+report the interace's speed.  For a sub-layer which
+has no concept of bandwidth, this object should be
+zero.]]>
+				</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.2.1.2.2.1.5</OID>
+				<Type>gauge32</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="2004" trending="false">
+			<Name>ifTableAdminStatus</Name>
+			<Description>Admin Status (If)</Description>
+			<Information>
+				<Subtext>
+					<![CDATA[The desired state of the interface.  The testing(3)
+state indicates that no operational packets can be
+passed.  When a managed system initializes, all
+interfaces start with ifAdminStatus in the down(2)
+state.  As a result of either explicit management
+action or per configuration information retained by
+the managed system, ifAdminStatus is then changed to
+either the up(1) or testing(3) states (or remains in
+the down(2) state).]]>
+				</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.2.1.2.2.1.7</OID>
+				<Type>integer</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Up</Display>
+						<Value>1</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Down</Display>
+						<Value>2</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Testing</Display>
+						<Value>3</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="2104" snmpSetAndGet="true">
+			<Name>ifTableAdminStatus</Name>
+			<Description>Admin Status (If)</Description>
+			<Type>write</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.2.1.2.2.1.7</OID>
+				<Type>integer</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Up</Display>
+						<Value>1</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Down</Display>
+						<Value>2</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Testing</Display>
+						<Value>3</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<!--Extended Interface Column-->
+		<Param id="2502" trending="false">
+			<Name>ifXIfHighSpeed</Name>
+			<Description>If High Speed (If X)</Description>
+			<Information>
+				<Subtext>
+					<![CDATA[An estimate of the interface's current bandwidth in
+units of 1,000,000 bits per second.  If this object
+reports a value of `n' then the speed of the interface
+is somewhere in the range of `n-500,000' to
+`n+499,999'.  For interfaces which do not vary in
+bandwidth or for those where no accurate estimation
+can be made, this object should contain the nominal
+bandwidth.  For a sub-layer which has no concept of
+bandwidth, this object should be zero.]]>
+				</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.2.1.31.1.1.1.15</OID>
+				<Type>gauge32</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>Mbps</Units>
+				<Range>
+					<Low>0</Low>
+					<High>65535</High>
+				</Range>
+			</Display>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<!--UPS Parameters-->
+		<Param id="3000" trending="false">
+			<Name>xupsInputFrequency</Name>
+			<Description>Xups Input Frequency</Description>
+			<Information>
+				<Subtext>
+					<![CDATA[The utility line frequency in tenths of Hz.]]>
+				</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.534.1.3.1.0</OID>
+				<Type>integer32</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>0.1 Hertz</Units>
+				<Range>
+					<Low>0</Low>
+					<High>2147483647</High>
+				</Range>
+				<Positions>
+					<Position>
+						<Page>UPS</Page>
+						<Column>0</Column>
+						<Row>0</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="3001" trending="false">
+			<Name>xupsInputNumPhases</Name>
+			<Description>Xups Input Num Phases</Description>
+			<Information>
+				<Subtext>
+					<![CDATA[The number of input phases (normally 1 to 3).]]>
+				</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.534.1.3.3.0</OID>
+				<Type>integer32</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Range>
+					<Low>0</Low>
+					<High>6</High>
+				</Range>
+				<Positions>
+					<Position>
+						<Page>UPS</Page>
+						<Column>0</Column>
+						<Row>1</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="3002" trending="false">
+			<Name>xupsOutputLoad</Name>
+			<Description>Xups Output Load</Description>
+			<Information>
+				<Subtext>
+					<![CDATA[The UPS output load in percent of rated capacity.]]>
+				</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.534.1.4.1.0</OID>
+				<Type>integer32</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>percent</Units>
+				<Range>
+					<Low>0</Low>
+					<High>200</High>
+				</Range>
+				<Positions>
+					<Position>
+						<Page>UPS</Page>
+						<Column>0</Column>
+						<Row>2</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="3003" trending="false">
+			<Name>xupsOutputFrequency</Name>
+			<Description>Xups Output Frequency</Description>
+			<Information>
+				<Subtext>
+					<![CDATA[The measured UPS output frequency in tenths of Hz.]]>
+				</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.534.1.4.2.0</OID>
+				<Type>integer32</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>0.1 Hertz</Units>
+				<Range>
+					<Low>0</Low>
+					<High>2147483647</High>
+				</Range>
+				<Positions>
+					<Position>
+						<Page>UPS</Page>
+						<Column>0</Column>
+						<Row>3</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="3004" trending="false">
+			<Name>xupsBatCapacity</Name>
+			<Description>Xups Bat Capacity</Description>
+			<Information>
+				<Subtext>
+					<![CDATA[Battery percent charge.]]>
+				</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.534.1.2.4.0</OID>
+				<Type>integer32</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>percent</Units>
+				<Range>
+					<Low>0</Low>
+					<High>100</High>
+				</Range>
+				<Positions>
+					<Position>
+						<Page>UPS</Page>
+						<Column>0</Column>
+						<Row>4</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
 		</Param>
 	</Params>
-
-	<QActions>
-		<QAction id="1" name="Precompiled Code" encoding="csharp" options="precompile" />
-		<QAction id="2" name="After Startup" encoding="csharp" triggers="2" />
-	</QActions>
-
 	<Groups>
-		<Group id="2">
-			<Name>After Startup</Name>
-			<Description>After Startup</Description>
-			<Type>poll action</Type>
+		<Group id="1000">
+			<Name>getGeneralParams</Name>
+			<Description>pools the General Params</Description>
+			<Type>poll</Type>
 			<Content>
-				<Action>2</Action>
+				<Param>1000</Param>
+				<Param>1001</Param>
+				<Param>1002</Param>
+				<Param>1003</Param>
+			</Content>
+		</Group>
+		<Group id="2000">
+			<Name>getInterfaceParams</Name>
+			<Description>pools the Interface Params</Description>
+			<Type>poll</Type>
+			<Content>
+				<Param>2000</Param>
+			</Content>
+		</Group>
+		<Group id="3000">
+			<Name>GetUPSParas</Name>
+			<Description>pools the UPS Extended Params</Description>
+			<Type>poll</Type>
+			<Content>
+				<Param>3000</Param>
+				<Param>3001</Param>
+				<Param>3002</Param>
+				<Param>3003</Param>
+				<Param>3004</Param>
 			</Content>
 		</Group>
 	</Groups>
-
-	<Triggers>
-		<Trigger id="1">
-			<Name>After Startup</Name>
-			<On>protocol</On>
-			<Time>after startup</Time>
-			<Type>action</Type>
-			<Content>
-				<Id>1</Id>
-			</Content>
-		</Trigger>
-	</Triggers>
-
-	<Actions>
-		<Action id="1">
-			<Name>After Startup Group</Name>
-			<On id="2">group</On>
-			<Type>execute next</Type>
-		</Action>
-		<Action id="2">
-			<Name>After Startup QAction</Name>
-			<On id="2">parameter</On>
-			<Type>run actions</Type>
-		</Action>
-	</Actions>
-
 	<Timers>
 		<Timer id="1">
 			<Name>Fast Timer (10s)</Name>
 			<Time initial="true">10000</Time>
 			<Interval>75</Interval>
 			<Content>
-			</Content>
-		</Timer>
-		<Timer id="2">
-			<Name>Medium Timer (1m)</Name>
-			<Time initial="true" dataDisplay="30000">60000</Time>
-			<Interval>75</Interval>
-			<Content>
-			</Content>
-		</Timer>
-		<Timer id="3">
-			<Name>Slow Timer (1h)</Name>
-			<Time initial="true">3600000</Time>
-			<Interval>75</Interval>
-			<Content>
+				<Group>1000</Group>
+				<Group>2000</Group>
+				<Group>3000</Group>
 			</Content>
 		</Timer>
 	</Timers>
-
 	<PortSettings name="SNMP Connection">
+		<BusAddress>
+			<Disabled>true</Disabled>
+		</BusAddress>
+		<Retries>
+			<DefaultValue>2</DefaultValue>
+		</Retries>
 	</PortSettings>
-
 	<VersionHistory>
 		<Branches>
 			<Branch id="1">
-				<Comment>Main Branch</Comment>
+				<Comment>
+					AmerMO-SLC-C-TrainingExerciseSnmpEatonBladeUps Branch</Comment>
 				<SystemVersions>
 					<SystemVersion id="0">
 						<MajorVersions>
 							<MajorVersion id="0">
 								<MinorVersions>
 									<MinorVersion id="1">
-										<Date>2024-01-09</Date>
+										<Date>2026-04-01</Date>
 										<Provider>
-											<Author>XXX</Author>
+											<Author>AmerMO</Author>
 											<Company>Skyline Communications</Company>
 										</Provider>
 										<Changes>
-											<NewFeature>Initial version</NewFeature>
+											<NewFeature>First try</NewFeature>
 										</Changes>
 									</MinorVersion>
 								</MinorVersions>
@@ -129,5 +1801,4 @@
 			</Branch>
 		</Branches>
 	</VersionHistory>
-
 </Protocol>
