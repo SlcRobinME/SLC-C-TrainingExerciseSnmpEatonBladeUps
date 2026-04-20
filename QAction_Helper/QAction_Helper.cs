@@ -91,11 +91,11 @@ public static class Parameter
 			public const int iftableadminstatus_2004 = 2004;
 			/// <summary>PID: 2004 | Type: read</summary>
 			public const int iftableadminstatus = 2004;
-			/// <summary>PID: 2502 | Type: read</summary>
+			/// <summary>PID: 2005 | Type: read</summary>
 			[EditorBrowsable(EditorBrowsableState.Never)]
-			public const int ifxifhighspeed_2502 = 2502;
-			/// <summary>PID: 2502 | Type: read</summary>
-			public const int ifxifhighspeed = 2502;
+			public const int ifhighspeed_2005 = 2005;
+			/// <summary>PID: 2005 | Type: read</summary>
+			public const int ifhighspeed = 2005;
 			public class Write
 			{
 			}
@@ -124,9 +124,47 @@ public static class Parameter
 			public const int iftableadminstatus = 3;
 			/// <summary>IDX: 4 | Type: read</summary>
 			[EditorBrowsable(EditorBrowsableState.Never)]
-			public const int ifxifhighspeed_2502 = 4;
+			public const int ifhighspeed_2005 = 4;
 			/// <summary>IDX: 4 | Type: read</summary>
-			public const int ifxifhighspeed = 4;
+			public const int ifhighspeed = 4;
+		}
+	}
+	public class Ifxtable
+	{
+		/// <summary>PID: 2500</summary>
+		public const int tablePid = 2500;
+		/// <summary>IDX: 0</summary>
+		public const int indexColumn = 0;
+		/// <summary>PID: 2501</summary>
+		public const int indexColumnPid = 2501;
+		public class Pid
+		{
+			/// <summary>PID: 2501 | Type: read</summary>
+			[EditorBrowsable(EditorBrowsableState.Never)]
+			public const int ifxtableinstance_2501 = 2501;
+			/// <summary>PID: 2501 | Type: read</summary>
+			public const int ifxtableinstance = 2501;
+			/// <summary>PID: 2502 | Type: read</summary>
+			[EditorBrowsable(EditorBrowsableState.Never)]
+			public const int ifxifhighspeed_2502 = 2502;
+			/// <summary>PID: 2502 | Type: read</summary>
+			public const int ifxifhighspeed = 2502;
+			public class Write
+			{
+			}
+		}
+		public class Idx
+		{
+			/// <summary>IDX: 0 | Type: read</summary>
+			[EditorBrowsable(EditorBrowsableState.Never)]
+			public const int ifxtableinstance_2501 = 0;
+			/// <summary>IDX: 0 | Type: read</summary>
+			public const int ifxtableinstance = 0;
+			/// <summary>IDX: 1 | Type: read</summary>
+			[EditorBrowsable(EditorBrowsableState.Never)]
+			public const int ifxifhighspeed_2502 = 1;
+			/// <summary>IDX: 1 | Type: read</summary>
+			public const int ifxifhighspeed = 1;
 		}
 	}
 }
@@ -144,6 +182,8 @@ public interface SLProtocolExt : SLProtocol
 {
 	/// <summary>PID: 2000</summary>
 	IftableQActionTable iftable { get; set; }
+	/// <summary>PID: 2500</summary>
+	IfxtableQActionTable ifxtable { get; set; }
 	object Sysdescr_1000 { get; set; }
 	object Sysdescr { get; set; }
 	object Sysuptime_1001 { get; set; }
@@ -160,7 +200,11 @@ public interface SLProtocolExt : SLProtocol
 	object Iftablespeed { get; set; }
 	object Iftableadminstatus_2004 { get; set; }
 	object Iftableadminstatus { get; set; }
+	object Ifhighspeed_2005 { get; set; }
+	object Ifhighspeed { get; set; }
 	object Iftableadminstatus_2104 { get; set; }
+	object Ifxtableinstance_2501 { get; set; }
+	object Ifxtableinstance { get; set; }
 	object Ifxifhighspeed_2502 { get; set; }
 	object Ifxifhighspeed { get; set; }
 	object Xupsinputfrequency_3000 { get; set; }
@@ -179,6 +223,8 @@ public class ConcreteSLProtocolExt : ConcreteSLProtocol, SLProtocolExt
 {
 	/// <summary>PID: 2000</summary>
 	public IftableQActionTable iftable { get; set; }
+	/// <summary>PID: 2500</summary>
+	public IfxtableQActionTable ifxtable { get; set; }
 	/// <summary>PID: 1000  | Type: read</summary>
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public System.Object Sysdescr_1000 {get { return GetParameter(1000); }set { SetParameter(1000, value); }}
@@ -219,9 +265,19 @@ public class ConcreteSLProtocolExt : ConcreteSLProtocol, SLProtocolExt
 	public System.Object Iftableadminstatus_2004 {get { return GetParameter(2004); }set { SetParameter(2004, value); }}
 	/// <summary>PID: 2004  | Type: read | DISCREETS: Up = 1, Down = 2, Testing = 3</summary>
 	public System.Object Iftableadminstatus {get { return GetParameter(2004); }set { SetParameter(2004, value); }}
+	/// <summary>PID: 2005  | Type: read</summary>
+	[EditorBrowsable(EditorBrowsableState.Never)]
+	public System.Object Ifhighspeed_2005 {get { return GetParameter(2005); }set { SetParameter(2005, value); }}
+	/// <summary>PID: 2005  | Type: read</summary>
+	public System.Object Ifhighspeed {get { return GetParameter(2005); }set { SetParameter(2005, value); }}
 	/// <summary>PID: 2104  | Type: write | DISCREETS: Up = 1, Down = 2, Testing = 3</summary>
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public System.Object Iftableadminstatus_2104 {get { return GetParameter(2104); }set { SetParameter(2104, value); }}
+	/// <summary>PID: 2501  | Type: read</summary>
+	[EditorBrowsable(EditorBrowsableState.Never)]
+	public System.Object Ifxtableinstance_2501 {get { return GetParameter(2501); }set { SetParameter(2501, value); }}
+	/// <summary>PID: 2501  | Type: read</summary>
+	public System.Object Ifxtableinstance {get { return GetParameter(2501); }set { SetParameter(2501, value); }}
 	/// <summary>PID: 2502  | Type: read</summary>
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public System.Object Ifxifhighspeed_2502 {get { return GetParameter(2502); }set { SetParameter(2502, value); }}
@@ -256,6 +312,7 @@ public class ConcreteSLProtocolExt : ConcreteSLProtocol, SLProtocolExt
 	public ConcreteSLProtocolExt()
 	{
 		iftable = new IftableQActionTable(this, 2000, "iftable");
+		ifxtable = new IfxtableQActionTable(this, 2500, "ifxtable");
 		Write = new WriteParameters(this);
 	}
 }
@@ -265,6 +322,13 @@ public class IftableQActionTable : QActionTable, IEnumerable<IftableQActionRow>
 	public IftableQActionTable(SLProtocol protocol, int tableId, string tableName) : base(protocol, tableId, tableName) { }
 	IEnumerator IEnumerable.GetEnumerator() { return (IEnumerator) GetEnumerator(); }
 	public IEnumerator<IftableQActionRow> GetEnumerator() { return new QActionTableEnumerator<IftableQActionRow>(this); }
+}
+/// <summary>IDX: 0</summary>
+public class IfxtableQActionTable : QActionTable, IEnumerable<IfxtableQActionRow>
+{
+	public IfxtableQActionTable(SLProtocol protocol, int tableId, string tableName) : base(protocol, tableId, tableName) { }
+	IEnumerator IEnumerable.GetEnumerator() { return (IEnumerator) GetEnumerator(); }
+	public IEnumerator<IfxtableQActionRow> GetEnumerator() { return new QActionTableEnumerator<IfxtableQActionRow>(this); }
 }
 /// <summary>IDX: 0</summary>
 public class IftableQActionRow : QActionTableRow
@@ -289,14 +353,32 @@ public class IftableQActionRow : QActionTableRow
 	public System.Object Iftableadminstatus_2004 { get { if (base.Columns.ContainsKey(3)) { return base.Columns[3]; } else { return null; } } set { if (base.Columns.ContainsKey(3)) { base.Columns[3] = value; } else { base.Columns.Add(3, value); } } }
 	/// <summary>PID: 2004 | Type: read</summary>
 	public System.Object Iftableadminstatus { get { if (base.Columns.ContainsKey(3)) { return base.Columns[3]; } else { return null; } } set { if (base.Columns.ContainsKey(3)) { base.Columns[3] = value; } else { base.Columns.Add(3, value); } } }
-	/// <summary>PID: 2502 | Type: read</summary>
+	/// <summary>PID: 2005 | Type: read</summary>
 	[EditorBrowsable(EditorBrowsableState.Never)]
-	public System.Object Ifxifhighspeed_2502 { get { if (base.Columns.ContainsKey(4)) { return base.Columns[4]; } else { return null; } } set { if (base.Columns.ContainsKey(4)) { base.Columns[4] = value; } else { base.Columns.Add(4, value); } } }
-	/// <summary>PID: 2502 | Type: read</summary>
-	public System.Object Ifxifhighspeed { get { if (base.Columns.ContainsKey(4)) { return base.Columns[4]; } else { return null; } } set { if (base.Columns.ContainsKey(4)) { base.Columns[4] = value; } else { base.Columns.Add(4, value); } } }
+	public System.Object Ifhighspeed_2005 { get { if (base.Columns.ContainsKey(4)) { return base.Columns[4]; } else { return null; } } set { if (base.Columns.ContainsKey(4)) { base.Columns[4] = value; } else { base.Columns.Add(4, value); } } }
+	/// <summary>PID: 2005 | Type: read</summary>
+	public System.Object Ifhighspeed { get { if (base.Columns.ContainsKey(4)) { return base.Columns[4]; } else { return null; } } set { if (base.Columns.ContainsKey(4)) { base.Columns[4] = value; } else { base.Columns.Add(4, value); } } }
 	public IftableQActionRow() : base(0, 5) { }
 	public IftableQActionRow(System.Object[] oRow) : base(0, 5, oRow) { }
 	public static implicit operator IftableQActionRow(System.Object[] source) { return new IftableQActionRow(source); }
 	public static implicit operator System.Object[](IftableQActionRow source) { return source.ToObjectArray(); }
+}
+/// <summary>IDX: 0</summary>
+public class IfxtableQActionRow : QActionTableRow
+{
+	/// <summary>PID: 2501 | Type: read</summary>
+	[EditorBrowsable(EditorBrowsableState.Never)]
+	public System.Object Ifxtableinstance_2501 { get { if (base.Columns.ContainsKey(0)) { return base.Columns[0]; } else { return null; } } set { if (base.Columns.ContainsKey(0)) { base.Columns[0] = value; } else { base.Columns.Add(0, value); } } }
+	/// <summary>PID: 2501 | Type: read</summary>
+	public System.Object Ifxtableinstance { get { if (base.Columns.ContainsKey(0)) { return base.Columns[0]; } else { return null; } } set { if (base.Columns.ContainsKey(0)) { base.Columns[0] = value; } else { base.Columns.Add(0, value); } } }
+	/// <summary>PID: 2502 | Type: read</summary>
+	[EditorBrowsable(EditorBrowsableState.Never)]
+	public System.Object Ifxifhighspeed_2502 { get { if (base.Columns.ContainsKey(1)) { return base.Columns[1]; } else { return null; } } set { if (base.Columns.ContainsKey(1)) { base.Columns[1] = value; } else { base.Columns.Add(1, value); } } }
+	/// <summary>PID: 2502 | Type: read</summary>
+	public System.Object Ifxifhighspeed { get { if (base.Columns.ContainsKey(1)) { return base.Columns[1]; } else { return null; } } set { if (base.Columns.ContainsKey(1)) { base.Columns[1] = value; } else { base.Columns.Add(1, value); } } }
+	public IfxtableQActionRow() : base(0, 2) { }
+	public IfxtableQActionRow(System.Object[] oRow) : base(0, 2, oRow) { }
+	public static implicit operator IfxtableQActionRow(System.Object[] source) { return new IfxtableQActionRow(source); }
+	public static implicit operator System.Object[](IfxtableQActionRow source) { return source.ToObjectArray(); }
 }
 }

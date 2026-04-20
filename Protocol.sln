@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.4.11626.88 stable
+VisualStudioVersion = 18.4.11626.88
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Internal", "Internal", "{E5E68DA3-1212-47CF-916A-49411C579E06}"
 	ProjectSection(SolutionItems) = preProject
@@ -41,6 +41,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Code Analysis", "Code Analy
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QAction_Helper", "QAction_Helper\QAction_Helper.csproj", "{BEB232D5-0601-40AE-BE63-BBBB17DBDDF2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QAction_1", "QAction_1\QAction_1.csproj", "{F3663CFE-88BE-C668-4E1A-B1E1EDF79C8B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{BEB232D5-0601-40AE-BE63-BBBB17DBDDF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEB232D5-0601-40AE-BE63-BBBB17DBDDF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEB232D5-0601-40AE-BE63-BBBB17DBDDF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3663CFE-88BE-C668-4E1A-B1E1EDF79C8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3663CFE-88BE-C668-4E1A-B1E1EDF79C8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3663CFE-88BE-C668-4E1A-B1E1EDF79C8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3663CFE-88BE-C668-4E1A-B1E1EDF79C8B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +64,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C81ABC16-3AD6-4E4A-AF40-03656E2472BB} = {E5E68DA3-1212-47CF-916A-49411C579E06}
 		{BEB232D5-0601-40AE-BE63-BBBB17DBDDF2} = {E5E68DA3-1212-47CF-916A-49411C579E06}
+		{F3663CFE-88BE-C668-4E1A-B1E1EDF79C8B} = {C3420DC9-CB2F-4D64-9EBD-D2830E50C2F8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {308AF966-3234-4C0A-96EB-19F33A00A899}

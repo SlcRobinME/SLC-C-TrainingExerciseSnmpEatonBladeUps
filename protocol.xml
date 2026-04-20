@@ -81,9 +81,6 @@ re-initialized.]]>
 				<RawType>numeric text</RawType>
 				<Type>double</Type>
 				<LengthType>next param</LengthType>
-				<Sequence noset="true">
-					div:100
-				</Sequence>
 			</Interprete>
 			<SNMP>
 				<Enabled>true</Enabled>
@@ -188,7 +185,7 @@ re-initialized.]]>
 				<ColumnOption idx="1" pid="2002" type="snmp" options="" />
 				<ColumnOption idx="2" pid="2003" type="snmp" options="" />
 				<ColumnOption idx="3" pid="2004" type="snmp" options="" />
-				<ColumnOption idx="4" pid="2502" type="snmp" options="" />
+				<ColumnOption idx="4" pid="2005" type="retrieved" options="" />
 			</ArrayOptions>
 			<Information>
 				<Subtext>
@@ -211,7 +208,7 @@ is given by the value of ifNumber.]]>
 				</Positions>
 			</Display>
 			<Measurement>
-				<Type options="tab=columns:2001|0-2002|1-2003|2-2004|3-2502|4,width:100-195-100-100-127,sort:INT-INT-INT-INT-INT,lines:20,filter:true">table</Type>
+				<Type options="tab=columns:2001|0-2002|1-2003|2-2004|3-2005|4,width:100-195-100-100-146,sort:INT-INT-INT-INT-INT,lines:20,filter:true">table</Type>
 			</Measurement>
 		</Param>
 		<Param id="2001" trending="false">
@@ -1489,7 +1486,91 @@ the down(2) state).]]>
 				</Discreets>
 			</Measurement>
 		</Param>
-		<!--Extended Interface Column-->
+		<Param id="2005" trending="false">
+			<Name>HighSpeed</Name>
+			<Description>High Speed Calculated</Description>
+			<Information>
+				<Subtext>
+					<![CDATA[An estimate of the interface's current bandwidth in
+units of 1,000,000 bits per second.  If this object
+reports a value of `n' then the speed of the interface
+is somewhere in the range of `n-500,000' to
+`n+499,999'.  For interfaces which do not vary in
+bandwidth or for those where no accurate estimation
+can be made, this object should contain the nominal
+bandwidth.  For a sub-layer which has no concept of
+bandwidth, this object should be zero.]]>
+				</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<!--Extended Interface Table-->
+		<Param id="2500" trending="false">
+			<Name>ifXTable</Name>
+			<Description>If X</Description>
+			<Type>array</Type>
+			<ArrayOptions index="0">
+				<ColumnOption idx="0" pid="2501" type="snmp" options="" />
+				<ColumnOption idx="1" pid="2502" type="snmp" options="" />
+			</ArrayOptions>
+			<Information>
+				<Subtext>
+					<![CDATA[A list of interface entries.  The number of entries
+is given by the value of ifNumber.  This table
+contains additional objects for the interface table.]]>
+				</Subtext>
+			</Information>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete" options="instance;multipleGetBulk:4">1.3.6.1.2.1.31.1.1</OID>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Measurement>
+				<Type options="tab=columns:2501|0-2502|1,width:100-100,sort:INT-INT,lines:20,filter:true">table</Type>
+			</Measurement>
+		</Param>
+		<Param id="2501" trending="false">
+			<Name>ifXTableInstance</Name>
+			<Description>Instance [IDX] (If X)</Description>
+			<Information>
+				<Subtext>
+					<![CDATA[This is the SNMP instance of the table. Format: [ifIndex].
+
+ - ifIndex: A unique value, greater than zero, for each
+interface.  It is recommended that values are assigned
+contiguously starting from 1.  The value for each
+interface sub-layer must remain constant at least from
+one re-initialization of the entity's network
+management system to the next re-initialization.
+]]>
+				</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>other</RawType>
+				<Type>string</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Measurement>
+				<Type>string</Type>
+			</Measurement>
+		</Param>
 		<Param id="2502" trending="false">
 			<Name>ifXIfHighSpeed</Name>
 			<Description>If High Speed (If X)</Description>
@@ -1519,11 +1600,6 @@ bandwidth, this object should be zero.]]>
 			</SNMP>
 			<Display>
 				<RTDisplay>true</RTDisplay>
-				<Units>Mbps</Units>
-				<Range>
-					<Low>0</Low>
-					<High>65535</High>
-				</Range>
 			</Display>
 			<Measurement>
 				<Type>number</Type>
@@ -1759,19 +1835,31 @@ bandwidth, this object should be zero.]]>
 				<Param>3004</Param>
 			</Content>
 		</Group>
+		<Group id="2500">
+			<Name>getExtendedInterfaceParams</Name>
+			<Description>pools the Extended Interface Table</Description>
+			<Type>poll</Type>
+			<Content>
+				<Param>2500</Param>
+			</Content>
+		</Group>
 	</Groups>
 	<Timers>
 		<Timer id="1">
-			<Name>Fast Timer (10s)</Name>
-			<Time initial="true">10000</Time>
+			<Name>Fast Timer (1s)</Name>
+			<Time initial="true">1000</Time>
 			<Interval>75</Interval>
 			<Content>
 				<Group>1000</Group>
 				<Group>2000</Group>
+				<Group>2500</Group>
 				<Group>3000</Group>
 			</Content>
 		</Timer>
 	</Timers>
+	<QActions>
+		<QAction id="1" name="Extends the Extended Interface Table for High Speed" encoding="csharp" triggers="2500" row="false"></QAction>
+	</QActions>
 	<PortSettings name="SNMP Connection">
 		<BusAddress>
 			<Disabled>true</Disabled>
