@@ -1487,7 +1487,7 @@ the down(2) state).]]>
 			</Measurement>
 		</Param>
 		<Param id="2005" trending="false">
-			<Name>HighSpeed</Name>
+			<Name>ifHighSpeed</Name>
 			<Description>High Speed Calculated</Description>
 			<Information>
 				<Subtext>
