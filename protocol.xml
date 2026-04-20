@@ -198,7 +198,7 @@ is given by the value of ifNumber.]]>
 			</Information>
 			<SNMP>
 				<Enabled>true</Enabled>
-				<OID type="complete" options="instance;multipleGetNext">1.3.6.1.2.1.2.2</OID>
+				<OID type="complete" options="instance;multipleGetBulk:4">1.3.6.1.2.1.2.2</OID>
 			</SNMP>
 			<Display>
 				<RTDisplay>true</RTDisplay>
@@ -1543,6 +1543,9 @@ bandwidth, this object should be zero.]]>
 				<RawType>numeric text</RawType>
 				<Type>double</Type>
 				<LengthType>next param</LengthType>
+				<Sequence noset="true">
+					div:10
+				</Sequence>
 			</Interprete>
 			<SNMP>
 				<Enabled>true</Enabled>
@@ -1551,7 +1554,7 @@ bandwidth, this object should be zero.]]>
 			</SNMP>
 			<Display>
 				<RTDisplay>true</RTDisplay>
-				<Units>0.1 Hertz</Units>
+				<Units>Hz</Units>
 				<Range>
 					<Low>0</Low>
 					<High>2147483647</High>
@@ -1600,6 +1603,7 @@ bandwidth, this object should be zero.]]>
 						<Row>1</Row>
 					</Position>
 				</Positions>
+				<Units>Units</Units>
 			</Display>
 			<Measurement>
 				<Type>number</Type>
@@ -1626,7 +1630,7 @@ bandwidth, this object should be zero.]]>
 			</SNMP>
 			<Display>
 				<RTDisplay>true</RTDisplay>
-				<Units>percent</Units>
+				<Units>%</Units>
 				<Range>
 					<Low>0</Low>
 					<High>200</High>
@@ -1656,6 +1660,9 @@ bandwidth, this object should be zero.]]>
 				<RawType>numeric text</RawType>
 				<Type>double</Type>
 				<LengthType>next param</LengthType>
+				<Sequence noset="true">
+					div:10
+				</Sequence>
 			</Interprete>
 			<SNMP>
 				<Enabled>true</Enabled>
@@ -1664,7 +1671,7 @@ bandwidth, this object should be zero.]]>
 			</SNMP>
 			<Display>
 				<RTDisplay>true</RTDisplay>
-				<Units>0.1 Hertz</Units>
+				<Units>Hz</Units>
 				<Range>
 					<Low>0</Low>
 					<High>2147483647</High>
@@ -1702,7 +1709,7 @@ bandwidth, this object should be zero.]]>
 			</SNMP>
 			<Display>
 				<RTDisplay>true</RTDisplay>
-				<Units>percent</Units>
+				<Units>%</Units>
 				<Range>
 					<Low>0</Low>
 					<High>100</High>
