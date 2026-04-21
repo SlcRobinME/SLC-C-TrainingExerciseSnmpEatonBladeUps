@@ -9,9 +9,6 @@ using SLParameter = Skyline.DataMiner.Scripting.Parameter;
 /// </summary>
 public static class QAction
 {
-    private const uint IfxInstanceColIdx = 0;
-    private const uint IfxHighSpeedColIdx = 1;
-
     /// <summary>
     /// Entry point of the QAction.
     /// Reads instance keys and high-speed values from IfxTable,
@@ -22,18 +19,17 @@ public static class QAction
     {
         try
         {
-            object[] rawKeys = (object[])protocol.NotifyProtocol(
+            object[] ifxColumns = (object[])protocol.NotifyProtocol(
                 (int)NotifyType.NT_GET_TABLE_COLUMNS,
                 SLParameter.Ifxtable.tablePid,
-                new uint[] { IfxInstanceColIdx });
+                new uint[]
+                {
+                    SLParameter.Ifxtable.Idx.ifxtableinstance,
+                    SLParameter.Ifxtable.Idx.ifxifhighspeed,
+                });
 
-            object[] rawValues = (object[])protocol.NotifyProtocol(
-                (int)NotifyType.NT_GET_TABLE_COLUMNS,
-                SLParameter.Ifxtable.tablePid,
-                new uint[] { IfxHighSpeedColIdx });
-
-            object[] xKeys = rawKeys?[0] as object[];
-            object[] xValues = rawValues?[0] as object[];
+            object[] xKeys = ifxColumns?[0] as object[];
+            object[] xValues = ifxColumns?[1] as object[];
 
             protocol.NotifyProtocol(
                 (int)NotifyType.NT_FILL_ARRAY_WITH_COLUMN,
