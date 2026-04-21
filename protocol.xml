@@ -25,6 +25,38 @@
 		<MinimumRequiredVersion>10.4.0.0 - 14003</MinimumRequiredVersion>
 	</Compliancies>
 	<Params>
+		<Param id="50" setter="true">
+			<Name>ForcePoll</Name>
+			<Description>Force Poll</Description>
+			<Type>write</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<Information>
+				<Subtext>Button to force pull data from JSON</Subtext>
+			</Information>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>Interface</Page>
+						<Column>0</Column>
+						<Row>1</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type width="110">button</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Force Poll</Display>
+						<Value>1</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
 		<!--General Parameters-->
 		<Param id="1000" trending="false">
 			<Name>sysDescr</Name>
@@ -1804,6 +1836,14 @@ bandwidth, this object should be zero.]]>
 		</Param>
 	</Params>
 	<Groups>
+		<Group id="3">
+			<Name>Parse Transport Streams</Name>
+			<Description>Parse Transport Streams</Description>
+			<Type>poll action</Type>
+			<Content>
+				<Action>3</Action>
+			</Content>
+		</Group>
 		<Group id="1000">
 			<Name>getGeneralParams</Name>
 			<Description>pools the General Params</Description>
@@ -1857,6 +1897,13 @@ bandwidth, this object should be zero.]]>
 			</Content>
 		</Timer>
 	</Timers>
+	<Actions>
+		<Action id="3">
+			<Name>Trigger Parse QAction</Name>
+			<On id="50">parameter</On>
+			<Type>run actions</Type>
+		</Action>
+	</Actions>
 	<QActions>
 		<QAction id="1" name="Extends the Extended Interface Table for High Speed" encoding="csharp" triggers="2500" row="false"></QAction>
 	</QActions>

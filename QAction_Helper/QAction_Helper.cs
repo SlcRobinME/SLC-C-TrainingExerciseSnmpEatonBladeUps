@@ -55,6 +55,11 @@ public static class Parameter
 	public const int xupsbatcapacity = 3004;
 	public class Write
 	{
+		/// <summary>PID: 50 | Type: write</summary>
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public const int forcepoll_50 = 50;
+		/// <summary>PID: 50 | Type: write</summary>
+		public const int forcepoll = 50;
 		/// <summary>PID: 2104 | Type: write</summary>
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		public const int iftableadminstatus_2104 = 2104;
@@ -170,6 +175,8 @@ public static class Parameter
 }
 public class WriteParameters
 {
+	/// <summary>PID: 50  | Type: write | DISCREETS: Force Poll = 1</summary>
+	public System.Object Forcepoll {get { return Protocol.GetParameter(50); }set { Protocol.SetParameter(50, value); }}
 	/// <summary>PID: 2104  | Type: write | DISCREETS: Up = 1, Down = 2, Testing = 3</summary>
 	public System.Object Iftableadminstatus {get { return Protocol.GetParameter(2104); }set { Protocol.SetParameter(2104, value); }}
 	public SLProtocolExt Protocol;
@@ -184,6 +191,8 @@ public interface SLProtocolExt : SLProtocol
 	IftableQActionTable iftable { get; set; }
 	/// <summary>PID: 2500</summary>
 	IfxtableQActionTable ifxtable { get; set; }
+	object Forcepoll_50 { get; set; }
+	object Forcepoll { get; set; }
 	object Sysdescr_1000 { get; set; }
 	object Sysdescr { get; set; }
 	object Sysuptime_1001 { get; set; }
@@ -225,6 +234,10 @@ public class ConcreteSLProtocolExt : ConcreteSLProtocol, SLProtocolExt
 	public IftableQActionTable iftable { get; set; }
 	/// <summary>PID: 2500</summary>
 	public IfxtableQActionTable ifxtable { get; set; }
+	/// <summary>PID: 50  | Type: write | DISCREETS: Force Poll = 1</summary>
+	public System.Object Forcepoll_50 {get { return GetParameter(50); }set { SetParameter(50, value); }}
+	/// <summary>PID: 50  | Type: write | DISCREETS: Force Poll = 1</summary>
+	public System.Object Forcepoll {get { return Write.Forcepoll; }set { Write.Forcepoll = value; }}
 	/// <summary>PID: 1000  | Type: read</summary>
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public System.Object Sysdescr_1000 {get { return GetParameter(1000); }set { SetParameter(1000, value); }}

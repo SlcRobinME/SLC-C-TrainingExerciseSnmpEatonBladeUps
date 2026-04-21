@@ -1,5 +1,7 @@
 using System;
+using Skyline.DataMiner.Net.Messages;
 using Skyline.DataMiner.Scripting;
+using SLParameter = Skyline.DataMiner.Scripting.Parameter;
 
 /// <summary>
 /// DataMiner QAction: Synchronizes values between two tables based on row keys.
@@ -7,40 +9,36 @@ using Skyline.DataMiner.Scripting;
 /// </summary>
 public static class QAction
 {
-    private const int HighSpeedCol = 2;
-    private const int TargetSpeedCol = 5;
+    private const uint IfxInstanceColIdx = 0;
+    private const uint IfxHighSpeedColIdx = 1;
 
     /// <summary>
     /// Entry point of the QAction.
-    /// Iterates over all keys in IfTable, retrieves corresponding values
-    /// from IfxTable, and updates column 5 in IfTable.
+    /// Reads instance keys and high-speed values from IfxTable,
+    /// then writes them into the ifHighSpeed column of IfTable.
     /// </summary>
     /// <param name="protocol">SLProtocolExt instance used to access DataMiner parameters.</param>
     public static void Run(SLProtocolExt protocol)
     {
         try
         {
-            var keys = protocol.GetKeys(Parameter.Iftable.tablePid);
+            object[] rawKeys = (object[])protocol.NotifyProtocol(
+                (int)NotifyType.NT_GET_TABLE_COLUMNS,
+                SLParameter.Ifxtable.tablePid,
+                new uint[] { IfxInstanceColIdx });
 
-            if (keys == null || keys.Length == 0)
-                return;
+            object[] rawValues = (object[])protocol.NotifyProtocol(
+                (int)NotifyType.NT_GET_TABLE_COLUMNS,
+                SLParameter.Ifxtable.tablePid,
+                new uint[] { IfxHighSpeedColIdx });
 
-            var tableIds = new int[keys.Length];
-            var rowKeys = new string[keys.Length];
-            var colIdxs = new int[keys.Length];
-            var values = new object[keys.Length];
+            object[] xKeys = rawKeys?[0] as object[];
+            object[] xValues = rawValues?[0] as object[];
 
-            for (int i = 0; i < keys.Length; i++)
-            {
-                double highSpeed = Convert.ToDouble(protocol.GetParameterIndexByKey(Parameter.Ifxtable.tablePid, keys[i], HighSpeedCol));
-
-                tableIds[i] = Parameter.Iftable.tablePid;
-                rowKeys[i] = keys[i];
-                colIdxs[i] = TargetSpeedCol;
-                values[i] = highSpeed;
-            }
-
-            protocol.SetParametersIndexByKey(tableIds, rowKeys, colIdxs, values);
+            protocol.NotifyProtocol(
+                (int)NotifyType.NT_FILL_ARRAY_WITH_COLUMN,
+                new object[] { SLParameter.Iftable.tablePid, SLParameter.Iftable.Pid.ifhighspeed, true },
+                new object[] { xKeys, xValues });
         }
         catch (Exception ex)
         {
