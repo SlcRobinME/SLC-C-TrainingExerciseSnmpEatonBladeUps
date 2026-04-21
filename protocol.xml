@@ -1520,7 +1520,7 @@ the down(2) state).]]>
 		</Param>
 		<Param id="2005" trending="false">
 			<Name>ifHighSpeed</Name>
-			<Description>High Speed Calculated</Description>
+			<Description>High Speed Calculated (If)</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[An estimate of the interface's current bandwidth in
