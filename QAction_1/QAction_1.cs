@@ -21,11 +21,26 @@ public static class QAction
         try
         {
             var keys = protocol.GetKeys(Parameter.Iftable.tablePid);
-            foreach (var key in keys)
+
+            if (keys == null || keys.Length == 0)
+                return;
+
+            var tableIds = new int[keys.Length];
+            var rowKeys = new string[keys.Length];
+            var colIdxs = new int[keys.Length];
+            var values = new object[keys.Length];
+
+            for (int i = 0; i < keys.Length; i++)
             {
-                double highSpeed = Convert.ToDouble(protocol.GetParameterIndexByKey(Parameter.Ifxtable.tablePid, key, HighSpeedCol));
-                protocol.SetParameterIndexByKey(Parameter.Iftable.tablePid, key, TargetSpeedCol, highSpeed);
+                double highSpeed = Convert.ToDouble(protocol.GetParameterIndexByKey(Parameter.Ifxtable.tablePid, keys[i], HighSpeedCol));
+
+                tableIds[i] = Parameter.Iftable.tablePid;
+                rowKeys[i] = keys[i];
+                colIdxs[i] = TargetSpeedCol;
+                values[i] = highSpeed;
             }
+
+            protocol.SetParametersIndexByKey(tableIds, rowKeys, colIdxs, values);
         }
         catch (Exception ex)
         {
