@@ -217,7 +217,6 @@ is given by the value of ifNumber.]]>
 			<Information>
 				<Subtext>
 					<![CDATA[This is the SNMP instance of the table. Format: [ifIndex].
-
  - ifIndex: A unique value, greater than zero, for each
 interface.  It is recommended that values are assigned
 contiguously starting from 1.  The value for each
@@ -1497,7 +1496,7 @@ the down(2) state).]]>
 		</Param>
 		<Param id="2005" trending="false">
 			<Name>ifCalculatedSpeed</Name>
-			<Description>High Speed Calculated (If)</Description>
+			<Description>Calculated Speed (If)</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[An estimate of the interface's current bandwidth in
@@ -1562,7 +1561,6 @@ contains additional objects for the interface table.]]>
 			<Information>
 				<Subtext>
 					<![CDATA[This is the SNMP instance of the table. Format: [ifIndex].
-
  - ifIndex: A unique value, greater than zero, for each
 interface.  It is recommended that values are assigned
 contiguously starting from 1.  The value for each
@@ -1872,7 +1870,7 @@ bandwidth, this object should be zero.]]>
 		</Timer>
 	</Timers>
 	<QActions>
-		<QAction id="1" name="Extends the Extended Interface Table for High Speed" encoding="csharp" triggers="2500" row="false"></QAction>
+		<QAction id="1" name="Extends the Extended Interface Table for Calculated Speed" encoding="csharp" triggers="2500" row="false"></QAction>
 	</QActions>
 	<PortSettings name="SNMP Connection">
 		<BusAddress>

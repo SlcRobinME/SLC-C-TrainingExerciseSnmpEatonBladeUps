@@ -1,7 +1,7 @@
-using Skyline.DataMiner.Net.Messages;
-using Skyline.DataMiner.Scripting;
 using System;
 using System.Collections.Generic;
+using Skyline.DataMiner.Net.Messages;
+using Skyline.DataMiner.Scripting;
 using SLParameter = Skyline.DataMiner.Scripting.Parameter;
 
 /// <summary>
@@ -58,7 +58,7 @@ public static class QAction
             new uint[]
             {
                 SLParameter.Iftable.Idx.iftableindex,
-                SLParameter.Iftable.Idx.iftablespeed,
+                SLParameter.Iftable.Idx.ifcalculatedspeed,
             });
 
         keys = columns?[0] as object[];
