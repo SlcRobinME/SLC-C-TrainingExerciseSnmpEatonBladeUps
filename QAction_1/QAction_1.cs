@@ -58,7 +58,7 @@ public static class QAction
             new uint[]
             {
                 SLParameter.Iftable.Idx.iftableindex,
-                SLParameter.Iftable.Idx.ifcalculatedspeed,
+                SLParameter.Iftable.Idx.iftablespeed,
             });
 
         keys = columns?[0] as object[];
