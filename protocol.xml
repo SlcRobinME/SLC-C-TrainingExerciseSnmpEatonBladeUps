@@ -25,38 +25,6 @@
 		<MinimumRequiredVersion>10.4.0.0 - 14003</MinimumRequiredVersion>
 	</Compliancies>
 	<Params>
-		<Param id="50" setter="true">
-			<Name>ForcePoll</Name>
-			<Description>Force Poll</Description>
-			<Type>write</Type>
-			<Interprete>
-				<RawType>numeric text</RawType>
-				<Type>double</Type>
-				<LengthType>next param</LengthType>
-			</Interprete>
-			<Information>
-				<Subtext>Button to force pull data from JSON</Subtext>
-			</Information>
-			<Display>
-				<RTDisplay>true</RTDisplay>
-				<Positions>
-					<Position>
-						<Page>Interface</Page>
-						<Column>0</Column>
-						<Row>1</Row>
-					</Position>
-				</Positions>
-			</Display>
-			<Measurement>
-				<Type width="110">button</Type>
-				<Discreets>
-					<Discreet>
-						<Display>Force Poll</Display>
-						<Value>1</Value>
-					</Discreet>
-				</Discreets>
-			</Measurement>
-		</Param>
 		<!--General Parameters-->
 		<Param id="1000" trending="false">
 			<Name>sysDescr</Name>
@@ -212,7 +180,7 @@ re-initialized.]]>
 			<Name>ifTable</Name>
 			<Description>If</Description>
 			<Type>array</Type>
-			<ArrayOptions index="0">
+			<ArrayOptions index="0" options=";volatile">
 				<ColumnOption idx="0" pid="2001" type="snmp" options="" />
 				<ColumnOption idx="1" pid="2002" type="snmp" options="" />
 				<ColumnOption idx="2" pid="2003" type="snmp" options="" />
@@ -1430,6 +1398,11 @@ zero.]]>
 			</SNMP>
 			<Display>
 				<RTDisplay>true</RTDisplay>
+				<Units>Mbps</Units>
+				<Range>
+					<Low>0</Low>
+					<High>4294967295</High>
+				</Range>
 			</Display>
 			<Measurement>
 				<Type>number</Type>
@@ -1542,6 +1515,11 @@ bandwidth, this object should be zero.]]>
 			</Interprete>
 			<Display>
 				<RTDisplay>true</RTDisplay>
+				<Units>Mbps</Units>
+				<Range>
+					<Low>0</Low>
+					<High>4294967295</High>
+				</Range>
 			</Display>
 			<Measurement>
 				<Type>number</Type>
@@ -1552,7 +1530,7 @@ bandwidth, this object should be zero.]]>
 			<Name>ifXTable</Name>
 			<Description>If X</Description>
 			<Type>array</Type>
-			<ArrayOptions index="0">
+			<ArrayOptions index="0" options=";volatile">
 				<ColumnOption idx="0" pid="2501" type="snmp" options="" />
 				<ColumnOption idx="1" pid="2502" type="snmp" options="" />
 			</ArrayOptions>
@@ -1568,7 +1546,7 @@ contains additional objects for the interface table.]]>
 				<OID type="complete" options="instance;multipleGetBulk:4">1.3.6.1.2.1.31.1.1</OID>
 			</SNMP>
 			<Display>
-				<RTDisplay>true</RTDisplay>
+				<RTDisplay>false</RTDisplay>
 			</Display>
 			<Measurement>
 				<Type options="tab=columns:2501|0-2502|1,width:100-100,sort:INT-INT,lines:20,filter:true">table</Type>
@@ -1597,7 +1575,7 @@ management system to the next re-initialization.
 				<LengthType>next param</LengthType>
 			</Interprete>
 			<Display>
-				<RTDisplay>true</RTDisplay>
+				<RTDisplay>false</RTDisplay>
 			</Display>
 			<Measurement>
 				<Type>string</Type>
@@ -1631,7 +1609,7 @@ bandwidth, this object should be zero.]]>
 				<Type>gauge32</Type>
 			</SNMP>
 			<Display>
-				<RTDisplay>true</RTDisplay>
+				<RTDisplay>false</RTDisplay>
 			</Display>
 			<Measurement>
 				<Type>number</Type>
@@ -1836,14 +1814,6 @@ bandwidth, this object should be zero.]]>
 		</Param>
 	</Params>
 	<Groups>
-		<Group id="3">
-			<Name>Parse Transport Streams</Name>
-			<Description>Parse Transport Streams</Description>
-			<Type>poll action</Type>
-			<Content>
-				<Action>3</Action>
-			</Content>
-		</Group>
 		<Group id="1000">
 			<Name>getGeneralParams</Name>
 			<Description>pools the General Params</Description>
@@ -1897,13 +1867,6 @@ bandwidth, this object should be zero.]]>
 			</Content>
 		</Timer>
 	</Timers>
-	<Actions>
-		<Action id="3">
-			<Name>Trigger Parse QAction</Name>
-			<On id="50">parameter</On>
-			<Type>run actions</Type>
-		</Action>
-	</Actions>
 	<QActions>
 		<QAction id="1" name="Extends the Extended Interface Table for High Speed" encoding="csharp" triggers="2500" row="false"></QAction>
 	</QActions>
