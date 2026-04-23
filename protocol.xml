@@ -180,7 +180,7 @@ re-initialized.]]>
 			<Name>ifTable</Name>
 			<Description>If</Description>
 			<Type>array</Type>
-			<ArrayOptions index="0" options=";volatile">
+			<ArrayOptions index="0">
 				<ColumnOption idx="0" pid="2001" type="snmp" options="" />
 				<ColumnOption idx="1" pid="2002" type="snmp" options="" />
 				<ColumnOption idx="2" pid="2003" type="snmp" options="" />
@@ -1367,7 +1367,7 @@ IANAifType textual convention.]]>
 				</Discreets>
 			</Measurement>
 		</Param>
-		<Param id="2003" trending="false">
+		<Param id="2003" trending="true">
 			<Name>ifTableSpeed</Name>
 			<Description>Speed (If)</Description>
 			<Information>
@@ -1379,7 +1379,7 @@ can be made, this object should contain the nominal
 bandwidth.  If the bandwidth of the interface is
 greater than the maximum value reportable by this
 object then this object should report its maximum
-value (4,294,967,295) and ifHighSpeed must be used to
+value (4,294,967,295) and ifCalculatedSpeed must be used to
 report the interace's speed.  For a sub-layer which
 has no concept of bandwidth, this object should be
 zero.]]>
@@ -1396,6 +1396,10 @@ zero.]]>
 				<OID type="complete">1.3.6.1.2.1.2.2.1.5</OID>
 				<Type>gauge32</Type>
 			</SNMP>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<CH>4294967295</CH>
+			</Alarm>
 			<Display>
 				<RTDisplay>true</RTDisplay>
 				<Units>Mbps</Units>
@@ -1492,7 +1496,7 @@ the down(2) state).]]>
 			</Measurement>
 		</Param>
 		<Param id="2005" trending="false">
-			<Name>ifHighSpeed</Name>
+			<Name>ifCalculatedSpeed</Name>
 			<Description>High Speed Calculated (If)</Description>
 			<Information>
 				<Subtext>
@@ -1582,8 +1586,8 @@ management system to the next re-initialization.
 			</Measurement>
 		</Param>
 		<Param id="2502" trending="false">
-			<Name>ifXIfHighSpeed</Name>
-			<Description>If High Speed (If X)</Description>
+			<Name>ifXCalculatedSpeed</Name>
+			<Description>If Calculated Speed (If X)</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[An estimate of the interface's current bandwidth in

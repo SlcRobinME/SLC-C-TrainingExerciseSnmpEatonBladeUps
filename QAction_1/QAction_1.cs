@@ -38,7 +38,7 @@ public static class QAction
 
             protocol.NotifyProtocol(
                 (int)NotifyType.NT_FILL_ARRAY_WITH_COLUMN,
-                new object[] { SLParameter.Iftable.tablePid, SLParameter.Iftable.Pid.ifhighspeed, true },
+                new object[] { SLParameter.Iftable.tablePid, SLParameter.Iftable.Pid.ifcalculatedspeed, true },
                 new object[] { resultKeys, resultValues });
         }
         catch (Exception ex)
@@ -79,7 +79,7 @@ public static class QAction
             new uint[]
             {
                 SLParameter.Ifxtable.Idx.ifxtableinstance,
-                SLParameter.Ifxtable.Idx.ifxifhighspeed,
+                SLParameter.Ifxtable.Idx.ifxcalculatedspeed,
             });
 
         keys = columns?[0] as object[];
