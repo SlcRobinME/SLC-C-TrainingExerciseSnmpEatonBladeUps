@@ -1600,7 +1600,6 @@ bandwidth, this object should be zero.]]>
 				<Type>number</Type>
 			</Measurement>
 		</Param>
-		
 		<Param id="3000" trending="false">
 			<Name>xupsInputFrequency</Name>
 			<Description>UPS input line frequency in Hz</Description>
@@ -1640,7 +1639,6 @@ bandwidth, this object should be zero.]]>
 				<Type>number</Type>
 			</Measurement>
 		</Param>
-		
 		<Param id="3001" trending="false">
 			<Name>xupsInputNumPhases</Name>
 			<Description>Number of UPS input phases</Description>
@@ -1794,14 +1792,11 @@ bandwidth, this object should be zero.]]>
 				<Type>number</Type>
 			</Measurement>
 		</Param>
-		
-		
 	</Params>
 	<QActions>
 		<QAction id="1" name="Format System Up Time" encoding="csharp" triggers ="2"/>
 		<QAction id="2" name="Calculate Interface Speed" encoding="csharp" triggers="2000"/>
 	</QActions>
-
 	<Groups>
 		<Group id="1">
 			<Name>General Parameters</Name>
@@ -1813,7 +1808,6 @@ bandwidth, this object should be zero.]]>
 				<!--<Param>3</Param>-->
 				<Param>4</Param>
 				<Param>5</Param>
-
 			</Content>
 		</Group>
 		<Group id="2">
@@ -1845,7 +1839,6 @@ bandwidth, this object should be zero.]]>
 			</Content>
 		</Group>
 	</Groups>
-
 	<Triggers>
 		<Trigger id="1">
 			<Name>After Startup</Name>
@@ -1866,7 +1859,6 @@ bandwidth, this object should be zero.]]>
 			</Content>
 		</Trigger>
 	</Triggers>
-
 	<Actions>
 		<Action id="1">
 			<Name>After Startup Group</Name>
@@ -1884,7 +1876,6 @@ bandwidth, this object should be zero.]]>
 			<Type>run actions</Type>
 		</Action>
 	</Actions>
-
 	<Timers>
 		<Timer id="1">
 			<Name>Timer (60s)</Name>
@@ -1898,10 +1889,8 @@ bandwidth, this object should be zero.]]>
 			</Content>
 		</Timer>
 	</Timers>
-
 	<PortSettings name="SNMP Connection">
 	</PortSettings>
-
 	<VersionHistory>
 		<Branches>
 			<Branch id="1">
@@ -1929,5 +1918,4 @@ bandwidth, this object should be zero.]]>
 			</Branch>
 		</Branches>
 	</VersionHistory>
-
 </Protocol>
