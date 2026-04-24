@@ -30,7 +30,7 @@
 		<!-- General params -->
 		<Param id="1" trending="false">
 			<Name>sysDescr</Name>
-			<Description>System description including hardware and software info</Description>
+			<Description>System Description Including Hardware and Software Info</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[A textual description of the entity.  This value should
@@ -98,7 +98,7 @@ re-initialized.]]>
 		</Param>
 		<Param id="3" trending="false">
 			<Name>SystemUpTime</Name>
-			<Description>System uptime formatted as duration</Description>
+			<Description>System Uptime Formatted as Duration</Description>
 			<Information>
 				<Subtext>Formatted system up time (d,h,m,s).</Subtext>
 			</Information>
@@ -124,7 +124,7 @@ re-initialized.]]>
 		</Param>
 		<Param id="4" trending="false">
 			<Name>xupsIdentManufacturer</Name>
-			<Description>UPS manufacturer name</Description>
+			<Description>UPS Manufacturer Name</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[The UPS Manufacturer Name (e.g. Eaton Corporation).]]>
@@ -161,7 +161,7 @@ re-initialized.]]>
 		</Param>
 		<Param id="5" trending="false">
 			<Name>xupsIdentModel</Name>
-			<Description>UPS model name</Description>
+			<Description>UPS Model Name</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[The UPS Model (e.g. Powerware Plus Model 18).]]>
@@ -199,7 +199,7 @@ re-initialized.]]>
 		<!-- Interface table -->
 		<Param id="1000" trending="false">
 			<Name>ifTable</Name>
-			<Description>Table of network interfaces</Description>
+			<Description>Table of Network Interfaces</Description>
 			<Type>array</Type>
 			<ArrayOptions index="0" options="volatile">
 				<ColumnOption idx="0" pid="1001" type="snmp"   options="" />
@@ -234,7 +234,7 @@ is given by the value of ifNumber.]]>
 		</Param>
 		<Param id="1001" trending="false">
 			<Name>ifTableIndex</Name>
-			<Description>Unique interface index (If)</Description>
+			<Description>Unique Interface Index (If)</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[A unique value, greater than zero, for each
@@ -260,7 +260,7 @@ management system to the next re-initialization.]]>
 		</Param>
 		<Param id="1002" trending="false">
 			<Name>ifTableType</Name>
-			<Description>Interface type (If)</Description>
+			<Description>Interface Type (If)</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[The type of interface.  Additional values for ifType
@@ -1387,7 +1387,7 @@ IANAifType textual convention.]]>
 		</Param>
 		<Param id="1003" trending="false">
 			<Name>ifTableSpeed</Name>
-			<Description>Interface raw speed in bps (If)</Description>
+			<Description>Interface Raw Speed in bps (If)</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[An estimate of the interface's current bandwidth in
@@ -1427,7 +1427,7 @@ zero.]]>	</Subtext>
 		</Param>
 		<Param id="1004" trending="false">
 			<Name>ifTableAdminStatus</Name>
-			<Description>Interface administrative state (If)</Description>
+			<Description>Interface Administrative State (If)</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[The desired state of the interface.  The testing(3)
@@ -1475,7 +1475,7 @@ the down(2) state).]]>
 		</Param>		
 		<Param id="1005" trending="false">
 			<Name>ifHighSpeedCalculated</Name>
-			<Description>Calculated interface speed in Mbps or Gbps (If)</Description>
+			<Description>Calculated Interface Speed in Mbps or Gbps (If)</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[An estimate of the interface's current bandwidth in
@@ -1505,12 +1505,12 @@ bandwidth, this object should be zero.]]>
 			</Display>
 			<!-- /SuppressValidator 2.9.7 -->
 			<Measurement>
-				<Type>number</Type>
+				<Type>string</Type>
 			</Measurement>
 		</Param>
 		<Param id="2000" trending="false">
 			<Name>ifXTable</Name>
-			<Description>Extended interface table</Description>
+			<Description>Extended Interface Table</Description>
 			<Type>array</Type>
 			<ArrayOptions index="0" options="volatile">
 				<ColumnOption idx="0" pid="2001" type="snmp" options="" />
@@ -1543,7 +1543,7 @@ contains additional objects for the interface table.]]>
 		</Param>
 		<Param id="2001" trending="false">
 			<Name>ifXTableInstance</Name>
-			<Description>Extended interface instance index (ifXTable)</Description>
+			<Description>Extended Interface Instance Index (Ifxtable)</Description>
 			<Information>
 				<Subtext>Table instance</Subtext>
 			</Information>
@@ -1563,7 +1563,7 @@ contains additional objects for the interface table.]]>
 		</Param>
 		<Param id="2002" trending="false">
 			<Name>ifXIfHighSpeed</Name>
-			<Description>Interface high speed in Mbps (ifXTable)</Description>
+			<Description>Interface High Speed in Mbps (Ifxtable)</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[An estimate of the interface's current bandwidth in
@@ -1600,9 +1600,9 @@ bandwidth, this object should be zero.]]>
 				<Type>number</Type>
 			</Measurement>
 		</Param>
-		<Param id="3000" trending="false">
+		<Param id="3000" trending="true">
 			<Name>xupsInputFrequency</Name>
-			<Description>UPS input line frequency in Hz</Description>
+			<Description>UPS Input Line Frequency in Hz</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[The utility line frequency in tenths of Hz.]]>
@@ -1635,13 +1635,25 @@ bandwidth, this object should be zero.]]>
 					</Position>
 				</Positions>
 			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<CL>10</CL>
+				<MaL>20</MaL>
+				<MiL>30</MiL>
+				<WaL>40</WaL>
+				<Normal>50</Normal>
+				<WaH>60</WaH>
+				<MiH>70</MiH>
+				<MaH>80</MaH>
+				<CH>90</CH>
+			</Alarm>
 			<Measurement>
 				<Type>number</Type>
 			</Measurement>
 		</Param>
-		<Param id="3001" trending="false">
+		<Param id="3001" trending="true">
 			<Name>xupsInputNumPhases</Name>
-			<Description>Number of UPS input phases</Description>
+			<Description>Number of UPS Input Phases</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[The number of input phases (normally 1 to 3).]]>
@@ -1677,9 +1689,9 @@ bandwidth, this object should be zero.]]>
 				<Type>number</Type>
 			</Measurement>
 		</Param>
-		<Param id="3002" trending="false">
+		<Param id="3002" trending="true">
 			<Name>xupsOutputLoad</Name>
-			<Description>UPS output load as percentage of rated capacity</Description>
+			<Description>UPS Output Load as Percentage of Rated Capacity</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[The UPS output load in percent of rated capacity.]]>
@@ -1711,13 +1723,21 @@ bandwidth, this object should be zero.]]>
 					</Position>
 				</Positions>
 			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>50</Normal>
+				<WaH>70</WaH>
+				<MiH>80</MiH>
+				<MaH>90</MaH>
+				<CH>100</CH>
+			</Alarm>
 			<Measurement>
 				<Type>number</Type>
 			</Measurement>
 		</Param>
-		<Param id="3003" trending="false">
+		<Param id="3003" trending="true">
 			<Name>xupsOutputFrequency</Name>
-			<Description>UPS output frequency in Hz</Description>
+			<Description>UPS Output Frequency in Hz</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[The measured UPS output frequency in tenths of Hz.]]>
@@ -1728,6 +1748,7 @@ bandwidth, this object should be zero.]]>
 				<RawType>numeric text</RawType>
 				<Type>double</Type>
 				<LengthType>next param</LengthType>
+				<Sequence noset="true">div:10</Sequence>
 			</Interprete>
 			<SNMP>
 				<Enabled>true</Enabled>
@@ -1749,14 +1770,26 @@ bandwidth, this object should be zero.]]>
 					</Position>
 				</Positions>
 			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<CL>10</CL>
+				<MaL>20</MaL>
+				<MiL>30</MiL>
+				<WaL>40</WaL>
+				<Normal>50</Normal>
+				<WaH>60</WaH>
+				<MiH>70</MiH>
+				<MaH>80</MaH>
+				<CH>90</CH>
+			</Alarm>
 			<Measurement>
 				<Type>number</Type>
 			</Measurement>
 		</Param>
 		
-		<Param id="3004" trending="false">
+		<Param id="3004" trending="true">
 			<Name>xupsBatCapacity</Name>
-			<Description>UPS battery charge percentage</Description>
+			<Description>UPS Battery Charge Percentage</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[Battery percent charge.]]>
@@ -1788,6 +1821,14 @@ bandwidth, this object should be zero.]]>
 					</Position>
 				</Positions>
 			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>100</Normal>
+				<WaL>50</WaL>
+				<MiL>20</MiL>
+				<MaL>10</MaL>
+				<CL>5</CL>
+			</Alarm>
 			<Measurement>
 				<Type>number</Type>
 			</Measurement>

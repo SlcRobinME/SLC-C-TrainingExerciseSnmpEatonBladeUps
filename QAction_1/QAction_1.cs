@@ -3,20 +3,28 @@ using SLParameter = Skyline.DataMiner.Scripting.Parameter;
 using Skyline.DataMiner.Scripting;
 
 /// <summary>
-/// DataMiner QAction Class: After Startup.
+/// Format System Up Time
 /// </summary>
 public static class QAction
 {
     /// <summary>
-    /// The QAction entry point.
+    /// Format System Up Time.
     /// </summary>
     /// <param name="protocol">Link with SLProtocol process.</param>
+    /// 
+    private const double TimeTicksPerSecond = 100.0;
     public static void Run(SLProtocolExt protocol)
     {
         try
         {
-            double ticks = Convert.ToDouble(protocol.GetParameter(SLParameter.sysuptime));
-            long totalSeconds = (long)(ticks / 100.0);
+            object rawTicks = protocol.GetParameter(SLParameter.sysuptime);
+
+            if (rawTicks == null) {
+                protocol.Log($"QA{protocol.QActionID}|sysUpTime returned null.", LogType.Error, LogLevel.NoLogging);
+                return;
+            }
+            double ticks = Convert.ToDouble(rawTicks);
+            long totalSeconds = (long)(ticks / TimeTicksPerSecond);
 
             protocol.SetParameter(SLParameter.systemuptime, (double)totalSeconds);
         }

@@ -5,15 +5,17 @@ using Skyline.DataMiner.Net.Messages;
 
 
 /// <summary>
-/// DataMiner QAction Class: After Startup.
+///  Calculate interface speed.
 /// </summary>
 public static class QAction
 {
-    private const double IfSpeedMaxValue = 4_294_967_295.0;
+    private const double IfSpeedMaxValue = 4294967295.0;
+    private const double BitsPerMbps = 1000000.0;
+    private const double MbpsPerGbps = 1000.0;
     private static string FormatSpeed(double speedMbps)
     {
-        if (speedMbps >= 1000)
-            return (speedMbps / 1000.0) + " Gbps";
+        if (speedMbps >= MbpsPerGbps)
+            return (speedMbps / MbpsPerGbps) + " Gbps";
         else
             return speedMbps + " Mbps";
     }
@@ -97,7 +99,7 @@ public static class QAction
                 }
                 else
                 {
-                    double speedMbps = rawSpeed / 1_000_000.0;
+                    double speedMbps = rawSpeed / BitsPerMbps;
                     calculatedSpeeds[i] = FormatSpeed(speedMbps);
                 }
             }
