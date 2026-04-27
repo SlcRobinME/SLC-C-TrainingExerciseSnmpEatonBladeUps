@@ -1754,6 +1754,11 @@ the down(2) state).]]>
 			<Display>
 				<RTDisplay>true</RTDisplay>
 			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>1</Normal>
+				<CH>2</CH>
+			</Alarm>
 			<Measurement>
 				<Type>discreet</Type>
 				<Discreets>
