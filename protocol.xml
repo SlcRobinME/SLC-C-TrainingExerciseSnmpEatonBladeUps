@@ -1927,11 +1927,11 @@ bandwidth, this object should be zero.]]>
 			<On id="2">group</On>
 			<Type>execute next</Type>
 		</Action>
-		<Action id="2">
+		<!--<Action id="2">
 			<Name>After Startup QAction</Name>
 			<On id="2">parameter</On>
 			<Type>run actions</Type>
-		</Action>
+		</Action>-->
 		<Action id="3">
 			<Name>Run Format UpTime QAction</Name>
 			<On id="2">parameter</On>
