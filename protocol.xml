@@ -18,7 +18,7 @@
 	<DeviceOID>1</DeviceOID>
 	<ElementType>Manager</ElementType>
 	<Type relativeTimers="true">snmpv2</Type>
-	<!-- SuppressValidator 1.22.6 WebInterface -->
+	<!-- SuppressValidator 1.22.6 Web interface-->
 	<Display defaultPage="General" pageOrder="General;Interface Table;UPS" wideColumnPages=""/>
 	<!-- /SuppressValidator 1.22.6 -->
 	<SNMP includepages="true">auto</SNMP>
@@ -70,7 +70,7 @@ and networking software.]]>
 		</Param>
 		<Param id="2" trending="false">
 			<Name>sysUpTime</Name>
-			<Description>Raw system uptime in timeticks (hundredths of a second)</Description>
+			<Description>Raw System Uptime in Timeticks (Hundredths of a Second)</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[The time (in hundredths of a second) since the
@@ -96,7 +96,7 @@ re-initialized.]]>
 				<Type>number</Type>
 			</Measurement>
 		</Param>
-		<Param id="3" trending="false">
+		<Param id="3" trending="true">
 			<Name>SystemUpTime</Name>
 			<Description>System Uptime Formatted as Duration</Description>
 			<Information>
@@ -104,9 +104,9 @@ re-initialized.]]>
 			</Information>
 			<Type>read</Type>
 			<Interprete>
-				<RawType>other</RawType>
+				<RawType>numeric text</RawType>
 				<LengthType>next param</LengthType>
-				<Type>string</Type>
+				<Type>double</Type>
 			</Interprete>
 			<Display>
 				<RTDisplay>true</RTDisplay>
@@ -118,6 +118,11 @@ re-initialized.]]>
 					</Position>
 				</Positions>
 			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>6000</Normal>
+				<CL>0</CL>
+			</Alarm>
 			<Measurement>
 				<Type options="time">number</Type>
 			</Measurement>
@@ -201,7 +206,7 @@ re-initialized.]]>
 			<Name>ifTable</Name>
 			<Description>Table of Network Interfaces</Description>
 			<Type>array</Type>
-			<ArrayOptions index="0" options="volatile">
+			<ArrayOptions index="0">
 				<ColumnOption idx="0" pid="1001" type="snmp"   options="" />
 				<ColumnOption idx="1" pid="1002" type="snmp"   options="" />
 				<ColumnOption idx="2" pid="1003" type="snmp"   options="" />
@@ -229,12 +234,12 @@ is given by the value of ifNumber.]]>
 				</Positions>
 			</Display>
 			<Measurement>
-				<Type options="tab=columns:1001|0-1002|1-1003|2-1004|3-1005|4,width:100-195-100-100-146,sort:INT-INT-INT-INT-INT,lines:20,filter:true">table</Type>
+				<Type options="tab=columns:1001|0-1002|1-1003|2-1004|3-1005|4,width:200-170-250-270-350,sort:INT-INT-INT-INT-INT,lines:20,filter:true">table</Type>
 			</Measurement>
 		</Param>
 		<Param id="1001" trending="false">
 			<Name>ifTableIndex</Name>
-			<Description>Unique Interface Index (If)</Description>
+			<Description>Unique Interface Index (Iftable)</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[A unique value, greater than zero, for each
@@ -260,7 +265,7 @@ management system to the next re-initialization.]]>
 		</Param>
 		<Param id="1002" trending="false">
 			<Name>ifTableType</Name>
-			<Description>Interface Type (If)</Description>
+			<Description>Interface Type (Iftable)</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[The type of interface.  Additional values for ifType
@@ -1387,7 +1392,7 @@ IANAifType textual convention.]]>
 		</Param>
 		<Param id="1003" trending="false">
 			<Name>ifTableSpeed</Name>
-			<Description>Interface Raw Speed in bps (If)</Description>
+			<Description>Interface Raw Speed in bps (Iftable)</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[An estimate of the interface's current bandwidth in
@@ -1421,13 +1426,25 @@ zero.]]>	</Subtext>
 					<High>4294967295</High>
 				</Range>
 			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<CL>0</CL>
+				<MaL>1000000</MaL>
+				<MiL>10000000</MiL>
+				<WaL>100000000</WaL>
+				<Normal>1000000000</Normal>
+				<WaH>2000000000</WaH>
+				<MiH>3000000000</MiH>
+				<MaH>3500000000</MaH>
+				<CH>4000000000</CH>
+			</Alarm>
 			<Measurement>
 				<Type>number</Type>
 			</Measurement>
 		</Param>
 		<Param id="1004" trending="false">
 			<Name>ifTableAdminStatus</Name>
-			<Description>Interface Administrative State (If)</Description>
+			<Description>Interface Administrative State (Iftable)</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[The desired state of the interface.  The testing(3)
@@ -1475,7 +1492,7 @@ the down(2) state).]]>
 		</Param>		
 		<Param id="1005" trending="false">
 			<Name>ifHighSpeedCalculated</Name>
-			<Description>Calculated Interface Speed in Mbps or Gbps (If)</Description>
+			<Description>Calculated Interface Speed in Mbps or Gbps (Iftable)</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[An estimate of the interface's current bandwidth in
@@ -1491,13 +1508,14 @@ bandwidth, this object should be zero.]]>
 			</Information>
 			<Type>read</Type>
 			<Interprete>
-				<RawType>other</RawType>
-				<Type>string</Type>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
 				<LengthType>next param</LengthType>
 			</Interprete>
 			<!-- SuppressValidator 2.9.7 Unit defined in QAction -->
 			<Display>
 				<RTDisplay>true</RTDisplay>
+				<Units>Mbps</Units>
 				<Range>
 					<Low>0</Low>
 					<High>4294967295</High>
@@ -1505,7 +1523,7 @@ bandwidth, this object should be zero.]]>
 			</Display>
 			<!-- /SuppressValidator 2.9.7 -->
 			<Measurement>
-				<Type>string</Type>
+				<Type>number</Type>
 			</Measurement>
 		</Param>
 		<Param id="2000" trending="false">
@@ -1553,7 +1571,6 @@ contains additional objects for the interface table.]]>
 				<Type>string</Type>
 				<LengthType>next param</LengthType>
 			</Interprete>
-			<!-- NEMA <SNMP> bloka! -->
 			<Display>
 				<RTDisplay>true</RTDisplay>
 			</Display>
@@ -1685,6 +1702,11 @@ bandwidth, this object should be zero.]]>
 					</Position>
 				</Positions>
 			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>3</Normal>
+				<CL>0</CL>
+			</Alarm>
 			<Measurement>
 				<Type>number</Type>
 			</Measurement>
@@ -1846,7 +1868,6 @@ bandwidth, this object should be zero.]]>
 			<Content>
 				<Param>1</Param>
 				<Param>2</Param>
-				<!--<Param>3</Param>-->
 				<Param>4</Param>
 				<Param>5</Param>
 			</Content>

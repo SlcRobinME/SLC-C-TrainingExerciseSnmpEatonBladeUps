@@ -1,7 +1,8 @@
+using Skyline.DataMiner.Net.Messages;
 using Skyline.DataMiner.Scripting;
 using System;
+using System.Collections.Generic;
 using SLParameter = Skyline.DataMiner.Scripting.Parameter;
-using Skyline.DataMiner.Net.Messages;
 
 
 /// <summary>
@@ -9,16 +10,9 @@ using Skyline.DataMiner.Net.Messages;
 /// </summary>
 public static class QAction
 {
-    private const double IfSpeedMaxValue = 4294967295.0;
-    private const double BitsPerMbps = 1000000.0;
-    private const double MbpsPerGbps = 1000.0;
-    private static string FormatSpeed(double speedMbps)
-    {
-        if (speedMbps >= MbpsPerGbps)
-            return (speedMbps / MbpsPerGbps) + " Gbps";
-        else
-            return speedMbps + " Mbps";
-    }
+    private const double BpsPerMbps = 1000000.0;
+    private const double UIntMax = uint.MaxValue;
+
     /// <summary>
     /// The QAction entry point.
     /// </summary>
@@ -28,86 +22,30 @@ public static class QAction
 
         try
         {
-            object[] ifColumns = (object[])protocol.NotifyProtocol(
-                (int)NotifyType.NT_GET_TABLE_COLUMNS,
-                SLParameter.Iftable.tablePid,
-                new uint[]
-                {
-                    SLParameter.Iftable.Idx.iftableindex,
-                    SLParameter.Iftable.Idx.iftablespeed,
-                });
-
-            object[] ifKeys = ifColumns?[0] as object[];
-            object[] ifSpeeds = ifColumns?[1] as object[];
+            object[] ifKeys = GetIfTableKeys(protocol);
+            object[] ifSpeeds = GetIfTableSpeeds(protocol);
 
             if (ifKeys == null || ifSpeeds == null || ifKeys.Length == 0)
             {
-                protocol.Log(string.Format("QA{0}|ifTable returned no rows.", protocol.QActionID), LogType.Allways, LogLevel.NoLogging);
+                protocol.Log($"QA{protocol.QActionID}|{protocol.GetTriggerParameter()}|IfTable returned no rows.",LogType.Error,LogLevel.NoLogging);
                 return;
             }
 
-            object[] ifxColumns = (object[])protocol.NotifyProtocol(
-                (int)NotifyType.NT_GET_TABLE_COLUMNS,
-                SLParameter.Ifxtable.tablePid,
-                new uint[]
-                {
-                                SLParameter.Ifxtable.Idx.ifxtableinstance,
-                                SLParameter.Ifxtable.Idx.ifxifhighspeed_2002,
-                });
+            Dictionary<string, double> highSpeedLookup = BuildHighSpeedLookup(protocol);
 
-            object[] xKeys = ifxColumns?[0] as object[];
-            object[] xValues = ifxColumns?[1] as object[];
-
-
-            var highSpeedLookup = new System.Collections.Generic.Dictionary<string, double>(StringComparer.Ordinal);
-            if (xKeys != null && xValues != null)
-            {
-                for (int i = 0; i < xKeys.Length; i++)
-                {
-                    string key = Convert.ToString(xKeys[i]);
-                    double val = xValues[i] != null ? Convert.ToDouble(xValues[i]) : double.NaN;
-                    highSpeedLookup[key] = val;
-                }
-            }
-
-
-            object[] calculatedSpeeds = new object[ifKeys.Length];
+            object[] resultKeys = new object[ifKeys.Length];
+            object[] resultValues = new object[ifKeys.Length];
 
             for (int i = 0; i < ifKeys.Length; i++)
             {
                 string key = Convert.ToString(ifKeys[i]);
                 double rawSpeed = ifSpeeds[i] != null ? Convert.ToDouble(ifSpeeds[i]) : double.NaN;
 
-                if (double.IsNaN(rawSpeed))
-                {
-                    calculatedSpeeds[i] = "N/A";
-                }
-                else if (rawSpeed >= IfSpeedMaxValue)
-                {
-                    if (highSpeedLookup.TryGetValue(key, out double highSpeed))
-                    {
-                        calculatedSpeeds[i] = FormatSpeed(highSpeed);
-                    }
-                    else
-                    {
-                        calculatedSpeeds[i] = "N/A";
-                        protocol.Log(
-                            string.Format("QA{0}|ifHighSpeed not found for key '{1}'.", protocol.QActionID, key),
-                            LogType.Allways,
-                            LogLevel.NoLogging);
-                    }
-                }
-                else
-                {
-                    double speedMbps = rawSpeed / BitsPerMbps;
-                    calculatedSpeeds[i] = FormatSpeed(speedMbps);
-                }
+                resultKeys[i] = key;
+                resultValues[i] = ResolveSpeed(protocol, key, rawSpeed, highSpeedLookup);
             }
 
-            protocol.NotifyProtocol(
-               (int)NotifyType.NT_FILL_ARRAY_WITH_COLUMN,
-               new object[] { SLParameter.Iftable.tablePid, SLParameter.Iftable.Pid.ifhighspeedcalculated, true },
-               new object[] { ifKeys, calculatedSpeeds });
+            protocol.NotifyProtocol((int)NotifyType.NT_FILL_ARRAY_WITH_COLUMN,new object[] { SLParameter.Iftable.tablePid, SLParameter.Iftable.Pid.ifhighspeedcalculated, true },new object[] { resultKeys, resultValues });
 
         }
         catch (Exception ex)
@@ -115,4 +53,75 @@ public static class QAction
             protocol.Log($"QA{protocol.QActionID}|{protocol.GetTriggerParameter()}|Run|Exception thrown:{Environment.NewLine}{ex}", LogType.Error, LogLevel.NoLogging);
         }
     }
+
+
+    private static object[] GetIfTableKeys(SLProtocolExt protocol)
+    {
+        var columns = (object[])protocol.NotifyProtocol((int)NotifyType.NT_GET_TABLE_COLUMNS,SLParameter.Iftable.tablePid,new uint[] { SLParameter.Iftable.Idx.iftableindex });
+
+        return columns?[0] as object[];
+    }
+
+    private static object[] GetIfTableSpeeds(SLProtocolExt protocol)
+    {
+        var columns = (object[])protocol.NotifyProtocol((int)NotifyType.NT_GET_TABLE_COLUMNS,SLParameter.Iftable.tablePid,new uint[] { SLParameter.Iftable.Idx.iftablespeed });
+
+        return columns?[0] as object[];
+    }
+
+    private static object[] GetIfxTableKeys(SLProtocolExt protocol)
+    {
+        var columns = (object[])protocol.NotifyProtocol((int)NotifyType.NT_GET_TABLE_COLUMNS,SLParameter.Ifxtable.tablePid,new uint[] { SLParameter.Ifxtable.Idx.ifxtableinstance });
+
+        return columns?[0] as object[];
+    }
+
+    private static object[] GetIfxTableSpeeds(SLProtocolExt protocol)
+    {
+        var columns = (object[])protocol.NotifyProtocol((int)NotifyType.NT_GET_TABLE_COLUMNS,SLParameter.Ifxtable.tablePid,new uint[] { SLParameter.Ifxtable.Idx.ifxifhighspeed_2002 });
+
+        return columns?[0] as object[];
+    }
+    private static Dictionary<string, double> BuildHighSpeedLookup(SLProtocolExt protocol)
+    {
+
+        object[] xKeys = GetIfxTableKeys(protocol);
+        object[] xSpeeds = GetIfxTableSpeeds(protocol);
+
+        var lookup = new Dictionary<string, double>();
+
+        if (xKeys == null || xSpeeds == null)
+            return lookup;
+
+        for (int i = 0; i < xKeys.Length; i++)
+        {
+            string key = Convert.ToString(xKeys[i]);
+            double val = xSpeeds[i] != null ? Convert.ToDouble(xSpeeds[i]) : double.NaN;
+            lookup[key] = val;
+        }
+
+        return lookup;
+    }
+
+    private static double ResolveSpeed(
+        SLProtocolExt protocol,
+        string key,
+        double rawSpeed,
+        Dictionary<string, double> highSpeedLookup)
+    {
+        if (double.IsNaN(rawSpeed))
+            return 0.0;
+
+        if (rawSpeed >= UIntMax)
+        {
+            if (highSpeedLookup.TryGetValue(key, out double highSpeed) && !double.IsNaN(highSpeed))
+                return highSpeed;
+
+            protocol.Log($"QA{protocol.QActionID}|ifHighSpeed not found for key '{key}'.",LogType.Allways,LogLevel.NoLogging);
+            return 0.0;
+        }
+
+        return rawSpeed / BpsPerMbps;
+    }
+
 }
