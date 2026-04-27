@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Skyline.DataMiner.Net.Messages;
 using Skyline.DataMiner.Scripting;
 using SLParameter = Skyline.DataMiner.Scripting.Parameter;
@@ -24,22 +25,15 @@ public static class QAction
     {
         try
         {
-            object[] ifKeys, ifSpeeds, xKeys, xSpeeds;
-
-            if (!TryGetIfTableColumns(protocol, out ifKeys, out ifSpeeds) ||
-                !TryGetIfxTableColumns(protocol, out xKeys, out xSpeeds))
+            if (!TryGetIfTableColumns(protocol, out Dictionary<string, double> ifSpeedTable) ||
+                !TryGetIfxTableColumns(protocol, out Dictionary<string, double> xSpeedTable))
             {
                 return;
             }
 
-            var xSpeedLookup = BuildXSpeedLookup(xKeys, xSpeeds);
+            var resultSpeeds = CalculateSpeeds(ifSpeedTable, xSpeedTable);
 
-            var (resultKeys, resultValues) = CalculateSpeeds(ifKeys, ifSpeeds, xSpeedLookup);
-
-            protocol.NotifyProtocol(
-                (int)NotifyType.NT_FILL_ARRAY_WITH_COLUMN,
-                new object[] { SLParameter.Iftable.tablePid, SLParameter.Iftable.Pid.ifcalculatedspeed, true },
-                new object[] { resultKeys, resultValues });
+            SetColumnFromDictionary(protocol, SLParameter.Iftable.tablePid, SLParameter.Iftable.Pid.ifcalculatedspeed, resultSpeeds);
         }
         catch (Exception ex)
         {
@@ -50,9 +44,25 @@ public static class QAction
         }
     }
 
-    private static bool TryGetIfTableColumns(SLProtocolExt protocol, out object[] keys, out object[] speeds)
+    private static void SetColumnFromDictionary(
+        SLProtocolExt protocol,
+        int tablePid,
+        int columnPid,
+        Dictionary<string, double> data)
     {
-        var columns = (object[])protocol.NotifyProtocol(
+        protocol.NotifyProtocol(
+            (int)NotifyType.NT_FILL_ARRAY_WITH_COLUMN,
+            new object[] { tablePid, columnPid, true },
+            new object[] { data.Keys.ToArray(), data.Values.Cast<object>().ToArray() });
+    }
+
+    private static bool TryGetIfTableColumns(
+        SLProtocolExt protocol,
+        out Dictionary<string, double> ifSpeedTable)
+    {
+        ifSpeedTable = null;
+
+        var result = protocol.NotifyProtocol(
             (int)NotifyType.NT_GET_TABLE_COLUMNS,
             SLParameter.Iftable.tablePid,
             new uint[]
@@ -61,19 +71,29 @@ public static class QAction
                 SLParameter.Iftable.Idx.iftablespeed,
             });
 
-        keys = columns?[0] as object[];
-        speeds = columns?[1] as object[];
+        if (!(result is object[] columns) || columns.Length < 2)
+        {
+            protocol.Log("QAction|IfTable columns are null or invalid.", LogType.Error, LogLevel.NoLogging);
+            return false;
+        }
 
-        if (keys != null && speeds != null)
-            return true;
+        if (!(columns[0] is object[] keys) || !(columns[1] is object[] speeds))
+        {
+            protocol.Log("QAction|IfTable keys/speeds are null.", LogType.Error, LogLevel.NoLogging);
+            return false;
+        }
 
-        protocol.Log("QAction|IfTable columns are null, skipping.", LogType.Error, LogLevel.NoLogging);
-        return false;
+        ifSpeedTable = BuildLookup(keys, speeds);
+        return true;
     }
 
-    private static bool TryGetIfxTableColumns(SLProtocolExt protocol, out object[] keys, out object[] speeds)
+    private static bool TryGetIfxTableColumns(
+        SLProtocolExt protocol,
+        out Dictionary<string, double> ifxSpeedTable)
     {
-        var columns = (object[])protocol.NotifyProtocol(
+        ifxSpeedTable = null;
+
+        var result = protocol.NotifyProtocol(
             (int)NotifyType.NT_GET_TABLE_COLUMNS,
             SLParameter.Ifxtable.tablePid,
             new uint[]
@@ -82,48 +102,51 @@ public static class QAction
                 SLParameter.Ifxtable.Idx.ifxcalculatedspeed,
             });
 
-        keys = columns?[0] as object[];
-        speeds = columns?[1] as object[];
+        if (!(result is object[] columns) || columns.Length < 2)
+        {
+            protocol.Log("QAction|IfxTable columns are null or invalid.", LogType.Error, LogLevel.NoLogging);
+            return false;
+        }
 
-        if (keys != null && speeds != null)
-            return true;
+        if (!(columns[0] is object[] keys) || !(columns[1] is object[] speeds))
+        {
+            protocol.Log("QAction|IfxTable keys/speeds are null.", LogType.Error, LogLevel.NoLogging);
+            return false;
+        }
 
-        protocol.Log("QAction|IfxTable columns are null, skipping.", LogType.Error, LogLevel.NoLogging);
-        return false;
+        ifxSpeedTable = BuildLookup(keys, speeds);
+        return true;
     }
 
-    private static Dictionary<string, double> BuildXSpeedLookup(object[] xKeys, object[] xSpeeds)
+    private static Dictionary<string, double> BuildLookup(object[] xKeys, object[] speeds)
     {
         var lookup = new Dictionary<string, double>(xKeys.Length, StringComparer.Ordinal);
 
         for (int i = 0; i < xKeys.Length; i++)
         {
-            lookup[Convert.ToString(xKeys[i])] = Convert.ToDouble(xSpeeds[i]);
+            lookup[Convert.ToString(xKeys[i])] = Convert.ToDouble(speeds[i]);
         }
 
         return lookup;
     }
 
-    private static (object[] keys, object[] values) CalculateSpeeds(
-        object[] ifKeys,
-        object[] ifSpeeds,
+    private static Dictionary<string, double> CalculateSpeeds(
+        Dictionary<string, double> ifSpeedLookup,
         Dictionary<string, double> xSpeedLookup)
     {
-        var resultKeys = new object[ifKeys.Length];
-        var resultValues = new object[ifKeys.Length];
+        Dictionary<string, double> resultKeys = new Dictionary<string, double>(ifSpeedLookup.Count);
 
-        for (int i = 0; i < ifKeys.Length; i++)
+        foreach (var kvp in ifSpeedLookup)
         {
-            string key = Convert.ToString(ifKeys[i]);
-            double ifSpeed = Convert.ToDouble(ifSpeeds[i]);
+            string key = kvp.Key;
+            double ifSpeed = kvp.Value;
 
-            resultKeys[i] = key;
-            resultValues[i] = ifSpeed >= UIntMax
+            resultKeys[key] = ifSpeed >= UIntMax
                 ? GetExtendedSpeed(xSpeedLookup, key)
                 : ifSpeed / BpsToMbps;
         }
 
-        return (resultKeys, resultValues);
+        return resultKeys;
     }
 
     private static double GetExtendedSpeed(Dictionary<string, double> lookup, string key)

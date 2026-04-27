@@ -10,7 +10,7 @@
 <Protocol xmlns="http://www.skyline.be/protocol">
 	<Name>Exercise SNMP Eaton Blade UPS Amer Mujalo</Name>
 	<Description>Exercise SNMP Eaton Blade UPS DataMiner connector</Description>
-	<Version>1.0.0.1</Version>
+	<Version>1.0.0.2</Version>
 	<IntegrationID>DMS-DRV-0001</IntegrationID>
 	<Provider>Skyline Communications</Provider>
 	<Vendor>Skyline Communications</Vendor>
@@ -18,7 +18,9 @@
 	<DeviceOID>1</DeviceOID>
 	<ElementType>Manager</ElementType>
 	<Type relativeTimers="true">snmpv2</Type>
-	<Display defaultPage="General" pageOrder="General;----------;Interface;UPS" wideColumnPages=""/>
+	<!-- SuppressValidator 1.22.6 No WebInterface here -->
+	<Display defaultPage="General" pageOrder="General;----------;Interface" wideColumnPages="General;Interface"/>
+	<!-- /SuppressValidator 1.22.6 -->
 	<SNMP includepages="true">auto</SNMP>
 	<Compliancies>
 		<CassandraReady>true</CassandraReady>
@@ -26,9 +28,9 @@
 	</Compliancies>
 	<Params>
 		<!--General Parameters-->
-		<Param id="1000" trending="false">
+		<Param id="1" trending="false">
 			<Name>sysDescr</Name>
-			<Description>System Description</Description>
+			<Description>System Description Including Hardware and Software Info.</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[A textual description of the entity.  This value should
@@ -58,7 +60,7 @@ and networking software.]]>
 					<Position>
 						<Page>General</Page>
 						<Column>0</Column>
-						<Row>0</Row>
+						<Row>1</Row>
 					</Position>
 				</Positions>
 			</Display>
@@ -66,9 +68,9 @@ and networking software.]]>
 				<Type lines="7">string</Type>
 			</Measurement>
 		</Param>
-		<Param id="1001" trending="false">
+		<Param id="2" trending="false">
 			<Name>sysUpTime</Name>
-			<Description>System up Time</Description>
+			<Description>Time Elapsed Since the Device Was Last Restarted.</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[The time (in hundredths of a second) since the
@@ -93,7 +95,7 @@ re-initialized.]]>
 					<Position>
 						<Page>General</Page>
 						<Column>0</Column>
-						<Row>1</Row>
+						<Row>2</Row>
 					</Position>
 				</Positions>
 			</Display>
@@ -101,9 +103,9 @@ re-initialized.]]>
 				<Type options="time">number</Type>
 			</Measurement>
 		</Param>
-		<Param id="1002" trending="false">
+		<Param id="3" trending="false">
 			<Name>xupsIdentManufacturer</Name>
-			<Description>Xups Ident Manufacturer</Description>
+			<Description>The UPS Manufacturer Name (e.g. Eaton Corporation).</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[The UPS Manufacturer Name (e.g. Eaton Corporation).]]>
@@ -130,7 +132,7 @@ re-initialized.]]>
 					<Position>
 						<Page>General</Page>
 						<Column>0</Column>
-						<Row>2</Row>
+						<Row>3</Row>
 					</Position>
 				</Positions>
 			</Display>
@@ -138,9 +140,9 @@ re-initialized.]]>
 				<Type>string</Type>
 			</Measurement>
 		</Param>
-		<Param id="1003" trending="false">
+		<Param id="4" trending="false">
 			<Name>xupsIdentModel</Name>
-			<Description>Xups Ident Model</Description>
+			<Description>The UPS Model (e.g. Powerware Plus Model 18).</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[The UPS Model (e.g. Powerware Plus Model 18).]]>
@@ -167,7 +169,7 @@ re-initialized.]]>
 					<Position>
 						<Page>General</Page>
 						<Column>0</Column>
-						<Row>3</Row>
+						<Row>4</Row>
 					</Position>
 				</Positions>
 			</Display>
@@ -175,17 +177,327 @@ re-initialized.]]>
 				<Type>string</Type>
 			</Measurement>
 		</Param>
+		<!--UPS Parameters-->
+		<Param id="5" trending="false">
+			<Name>xupsInputFrequency</Name>
+			<Description>The Utility Line Frequency in Tenths of Hz.</Description>
+			<Information>
+				<Subtext>
+					<![CDATA[The utility line frequency in tenths of Hz.]]>
+				</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
+				<LengthType>next param</LengthType>
+				<Sequence noset="true">
+					div:10
+				</Sequence>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.534.1.3.1.0</OID>
+				<Type>integer32</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>Hz</Units>
+				<Range>
+					<Low>0</Low>
+					<High>2147483647</High>
+				</Range>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>9</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<CL>10</CL>
+				<MaL>20</MaL>
+				<MiL>30</MiL>
+				<WaL>40</WaL>
+				<Normal>50</Normal>
+				<WaH>60</WaH>
+				<MiH>70</MiH>
+				<MaH>80</MaH>
+				<CH>90</CH>
+			</Alarm>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="6" trending="false">
+			<Name>xupsInputNumPhases</Name>
+			<Description>The Number of Input Phases.</Description>
+			<Information>
+				<Subtext>
+					<![CDATA[The number of input phases (normally 1 to 3).]]>
+				</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.534.1.3.3.0</OID>
+				<Type>integer32</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Range>
+					<Low>0</Low>
+					<High>6</High>
+				</Range>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>8</Row>
+					</Position>
+				</Positions>
+				<Units>Units</Units>
+			</Display>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="7" trending="false">
+			<Name>xupsOutputLoad</Name>
+			<Description>The UPS Output Load in Percent of Rated Capacity.</Description>
+			<Information>
+				<Subtext>
+					<![CDATA[The UPS output load in percent of rated capacity.]]>
+				</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.534.1.4.1.0</OID>
+				<Type>integer32</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>%</Units>
+				<Range>
+					<Low>0</Low>
+					<High>200</High>
+				</Range>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>7</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>50</Normal>
+				<WaH>70</WaH>
+				<MiH>80</MiH>
+				<MaH>90</MaH>
+				<CH>100</CH>
+			</Alarm>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="8" trending="false">
+			<Name>xupsOutputFrequency</Name>
+			<Description>The Measured UPS Output Frequency in Tenths of Hz.</Description>
+			<Information>
+				<Subtext>
+					<![CDATA[The measured UPS output frequency in tenths of Hz.]]>
+				</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
+				<LengthType>next param</LengthType>
+				<Sequence noset="true">
+					div:10
+				</Sequence>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.534.1.4.2.0</OID>
+				<Type>integer32</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>Hz</Units>
+				<Range>
+					<Low>0</Low>
+					<High>2147483647</High>
+				</Range>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>6</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<CL>10</CL>
+				<MaL>20</MaL>
+				<MiL>30</MiL>
+				<WaL>40</WaL>
+				<Normal>50</Normal>
+				<WaH>60</WaH>
+				<MiH>70</MiH>
+				<MaH>80</MaH>
+				<CH>90</CH>
+			</Alarm>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="9" trending="false">
+			<Name>xupsBatCapacity</Name>
+			<Description>The UPS Battery Capacity in Percent.</Description>
+			<Information>
+				<Subtext>
+					<![CDATA[Battery percent charge.]]>
+				</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.534.1.2.4.0</OID>
+				<Type>integer32</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>%</Units>
+				<Range>
+					<Low>0</Low>
+					<High>100</High>
+				</Range>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>5</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>100</Normal>
+				<WaL>50</WaL>
+				<MiL>20</MiL>
+				<MaL>10</MaL>
+				<CL>5</CL>
+			</Alarm>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<!--Titles-->
+		<Param id="100">
+			<Name>SysTitle_Begin</Name>
+			<Description>System Title of the Device.</Description>
+			<Type>fixed</Type>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>0</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="begin">title</Type>
+			</Measurement>
+		</Param>
+		<Param id="110">
+			<Name>sysTitle_End</Name>
+			<Description>System Title End</Description>
+			<Type>fixed</Type>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>10</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="end">title</Type>
+			</Measurement>
+		</Param>
+		<Param id="200">
+			<Name>InterfaceTitle_Begin</Name>
+			<Description>Interface Overview Table.</Description>
+			<Type>fixed</Type>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>Interface</Page>
+						<Column>0</Column>
+						<Row>0</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="begin">title</Type>
+			</Measurement>
+		</Param>
+		<Param id="210">
+			<Name>InterfaceTitle_End</Name>
+			<Description>Interface Title End</Description>
+			<Type>fixed</Type>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>Interface</Page>
+						<Column>0</Column>
+						<Row>2</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="end">title</Type>
+			</Measurement>
+		</Param>
 		<!--Interface Table-->
-		<Param id="2000" trending="false">
+		<Param id="1000" trending="false">
 			<Name>ifTable</Name>
 			<Description>If</Description>
 			<Type>array</Type>
 			<ArrayOptions index="0">
-				<ColumnOption idx="0" pid="2001" type="snmp" options="" />
-				<ColumnOption idx="1" pid="2002" type="snmp" options="" />
-				<ColumnOption idx="2" pid="2003" type="snmp" options="" />
-				<ColumnOption idx="3" pid="2004" type="snmp" options="" />
-				<ColumnOption idx="4" pid="2005" type="retrieved" options="" />
+				<ColumnOption idx="0" pid="1001" type="snmp" options="" />
+				<ColumnOption idx="1" pid="1002" type="snmp" options="" />
+				<ColumnOption idx="2" pid="1003" type="snmp" options=";enableHeaderSum;enableHistogram;enableHeatmap" />
+				<ColumnOption idx="3" pid="1004" type="snmp" options="" />
+				<ColumnOption idx="4" pid="1005" type="retrieved" options=";enableHeaderSum;enableHistogram;enableHeatmap" />
 			</ArrayOptions>
 			<Information>
 				<Subtext>
@@ -203,15 +515,15 @@ is given by the value of ifNumber.]]>
 					<Position>
 						<Page>Interface</Page>
 						<Column>0</Column>
-						<Row>0</Row>
+						<Row>1</Row>
 					</Position>
 				</Positions>
 			</Display>
 			<Measurement>
-				<Type options="tab=columns:2001|0-2002|1-2003|2-2004|3-2005|4,width:100-195-100-100-146,sort:INT-INT-INT-INT-INT,lines:20,filter:true">table</Type>
+				<Type options="tab=columns:1001|0-1002|1-1003|2-1004|3-1005|4,width:100-195-116-100-146,sort:INT-INT-INT-INT-INT,lines:20,filter:true">table</Type>
 			</Measurement>
 		</Param>
-		<Param id="2001" trending="false">
+		<Param id="1001" trending="false">
 			<Name>ifTableIndex</Name>
 			<Description>Index [IDX] (If)</Description>
 			<Information>
@@ -239,7 +551,7 @@ management system to the next re-initialization.
 				<Type>string</Type>
 			</Measurement>
 		</Param>
-		<Param id="2002" trending="false">
+		<Param id="1002" trending="false">
 			<Name>ifTableType</Name>
 			<Description>Type (If)</Description>
 			<Information>
@@ -1366,7 +1678,7 @@ IANAifType textual convention.]]>
 				</Discreets>
 			</Measurement>
 		</Param>
-		<Param id="2003" trending="true">
+		<Param id="1003" trending="true">
 			<Name>ifTableSpeed</Name>
 			<Description>Speed (If)</Description>
 			<Information>
@@ -1397,6 +1709,7 @@ zero.]]>
 			</SNMP>
 			<Alarm>
 				<Monitored>true</Monitored>
+				<CL>0</CL>
 				<CH>4294967295</CH>
 			</Alarm>
 			<Display>
@@ -1411,7 +1724,7 @@ zero.]]>
 				<Type>number</Type>
 			</Measurement>
 		</Param>
-		<Param id="2004" trending="false">
+		<Param id="1004" trending="false">
 			<Name>ifTableAdminStatus</Name>
 			<Description>Admin Status (If)</Description>
 			<Information>
@@ -1459,7 +1772,7 @@ the down(2) state).]]>
 				</Discreets>
 			</Measurement>
 		</Param>
-		<Param id="2104" snmpSetAndGet="true">
+		<Param id="1104" snmpSetAndGet="true">
 			<Name>ifTableAdminStatus</Name>
 			<Description>Admin Status (If)</Description>
 			<Type>write</Type>
@@ -1494,7 +1807,7 @@ the down(2) state).]]>
 				</Discreets>
 			</Measurement>
 		</Param>
-		<Param id="2005" trending="false">
+		<Param id="1005" trending="false">
 			<Name>ifCalculatedSpeed</Name>
 			<Description>Calculated Speed (If)</Description>
 			<Information>
@@ -1524,18 +1837,23 @@ bandwidth, this object should be zero.]]>
 					<High>4294967295</High>
 				</Range>
 			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<CL>0</CL>
+				<CH>4294967295</CH>
+			</Alarm>
 			<Measurement>
 				<Type>number</Type>
 			</Measurement>
 		</Param>
 		<!--Extended Interface Table-->
-		<Param id="2500" trending="false">
+		<Param id="2000" trending="false">
 			<Name>ifXTable</Name>
 			<Description>If X</Description>
 			<Type>array</Type>
 			<ArrayOptions index="0" options=";volatile">
-				<ColumnOption idx="0" pid="2501" type="snmp" options="" />
-				<ColumnOption idx="1" pid="2502" type="snmp" options="" />
+				<ColumnOption idx="0" pid="2001" type="snmp" options="" />
+				<ColumnOption idx="1" pid="2002" type="snmp" options="" />
 			</ArrayOptions>
 			<Information>
 				<Subtext>
@@ -1552,10 +1870,10 @@ contains additional objects for the interface table.]]>
 				<RTDisplay>false</RTDisplay>
 			</Display>
 			<Measurement>
-				<Type options="tab=columns:2501|0-2502|1,width:100-100,sort:INT-INT,lines:20,filter:true">table</Type>
+				<Type options="tab=lines:20,filter:true">table</Type>
 			</Measurement>
 		</Param>
-		<Param id="2501" trending="false">
+		<Param id="2001" trending="false">
 			<Name>ifXTableInstance</Name>
 			<Description>Instance [IDX] (If X)</Description>
 			<Information>
@@ -1583,7 +1901,7 @@ management system to the next re-initialization.
 				<Type>string</Type>
 			</Measurement>
 		</Param>
-		<Param id="2502" trending="false">
+		<Param id="2002" trending="false">
 			<Name>ifXCalculatedSpeed</Name>
 			<Description>If Calculated Speed (If X)</Description>
 			<Information>
@@ -1617,242 +1935,31 @@ bandwidth, this object should be zero.]]>
 				<Type>number</Type>
 			</Measurement>
 		</Param>
-		<!--UPS Parameters-->
-		<Param id="3000" trending="false">
-			<Name>xupsInputFrequency</Name>
-			<Description>Xups Input Frequency</Description>
-			<Information>
-				<Subtext>
-					<![CDATA[The utility line frequency in tenths of Hz.]]>
-				</Subtext>
-			</Information>
-			<Type>read</Type>
-			<Interprete>
-				<RawType>numeric text</RawType>
-				<Type>double</Type>
-				<LengthType>next param</LengthType>
-				<Sequence noset="true">
-					div:10
-				</Sequence>
-			</Interprete>
-			<SNMP>
-				<Enabled>true</Enabled>
-				<OID type="complete">1.3.6.1.4.1.534.1.3.1.0</OID>
-				<Type>integer32</Type>
-			</SNMP>
-			<Display>
-				<RTDisplay>true</RTDisplay>
-				<Units>Hz</Units>
-				<Range>
-					<Low>0</Low>
-					<High>2147483647</High>
-				</Range>
-				<Positions>
-					<Position>
-						<Page>UPS</Page>
-						<Column>0</Column>
-						<Row>0</Row>
-					</Position>
-				</Positions>
-			</Display>
-			<Measurement>
-				<Type>number</Type>
-			</Measurement>
-		</Param>
-		<Param id="3001" trending="false">
-			<Name>xupsInputNumPhases</Name>
-			<Description>Xups Input Num Phases</Description>
-			<Information>
-				<Subtext>
-					<![CDATA[The number of input phases (normally 1 to 3).]]>
-				</Subtext>
-			</Information>
-			<Type>read</Type>
-			<Interprete>
-				<RawType>numeric text</RawType>
-				<Type>double</Type>
-				<LengthType>next param</LengthType>
-			</Interprete>
-			<SNMP>
-				<Enabled>true</Enabled>
-				<OID type="complete">1.3.6.1.4.1.534.1.3.3.0</OID>
-				<Type>integer32</Type>
-			</SNMP>
-			<Display>
-				<RTDisplay>true</RTDisplay>
-				<Range>
-					<Low>0</Low>
-					<High>6</High>
-				</Range>
-				<Positions>
-					<Position>
-						<Page>UPS</Page>
-						<Column>0</Column>
-						<Row>1</Row>
-					</Position>
-				</Positions>
-				<Units>Units</Units>
-			</Display>
-			<Measurement>
-				<Type>number</Type>
-			</Measurement>
-		</Param>
-		<Param id="3002" trending="false">
-			<Name>xupsOutputLoad</Name>
-			<Description>Xups Output Load</Description>
-			<Information>
-				<Subtext>
-					<![CDATA[The UPS output load in percent of rated capacity.]]>
-				</Subtext>
-			</Information>
-			<Type>read</Type>
-			<Interprete>
-				<RawType>numeric text</RawType>
-				<Type>double</Type>
-				<LengthType>next param</LengthType>
-			</Interprete>
-			<SNMP>
-				<Enabled>true</Enabled>
-				<OID type="complete">1.3.6.1.4.1.534.1.4.1.0</OID>
-				<Type>integer32</Type>
-			</SNMP>
-			<Display>
-				<RTDisplay>true</RTDisplay>
-				<Units>%</Units>
-				<Range>
-					<Low>0</Low>
-					<High>200</High>
-				</Range>
-				<Positions>
-					<Position>
-						<Page>UPS</Page>
-						<Column>0</Column>
-						<Row>2</Row>
-					</Position>
-				</Positions>
-			</Display>
-			<Measurement>
-				<Type>number</Type>
-			</Measurement>
-		</Param>
-		<Param id="3003" trending="false">
-			<Name>xupsOutputFrequency</Name>
-			<Description>Xups Output Frequency</Description>
-			<Information>
-				<Subtext>
-					<![CDATA[The measured UPS output frequency in tenths of Hz.]]>
-				</Subtext>
-			</Information>
-			<Type>read</Type>
-			<Interprete>
-				<RawType>numeric text</RawType>
-				<Type>double</Type>
-				<LengthType>next param</LengthType>
-				<Sequence noset="true">
-					div:10
-				</Sequence>
-			</Interprete>
-			<SNMP>
-				<Enabled>true</Enabled>
-				<OID type="complete">1.3.6.1.4.1.534.1.4.2.0</OID>
-				<Type>integer32</Type>
-			</SNMP>
-			<Display>
-				<RTDisplay>true</RTDisplay>
-				<Units>Hz</Units>
-				<Range>
-					<Low>0</Low>
-					<High>2147483647</High>
-				</Range>
-				<Positions>
-					<Position>
-						<Page>UPS</Page>
-						<Column>0</Column>
-						<Row>3</Row>
-					</Position>
-				</Positions>
-			</Display>
-			<Measurement>
-				<Type>number</Type>
-			</Measurement>
-		</Param>
-		<Param id="3004" trending="false">
-			<Name>xupsBatCapacity</Name>
-			<Description>Xups Bat Capacity</Description>
-			<Information>
-				<Subtext>
-					<![CDATA[Battery percent charge.]]>
-				</Subtext>
-			</Information>
-			<Type>read</Type>
-			<Interprete>
-				<RawType>numeric text</RawType>
-				<Type>double</Type>
-				<LengthType>next param</LengthType>
-			</Interprete>
-			<SNMP>
-				<Enabled>true</Enabled>
-				<OID type="complete">1.3.6.1.4.1.534.1.2.4.0</OID>
-				<Type>integer32</Type>
-			</SNMP>
-			<Display>
-				<RTDisplay>true</RTDisplay>
-				<Units>%</Units>
-				<Range>
-					<Low>0</Low>
-					<High>100</High>
-				</Range>
-				<Positions>
-					<Position>
-						<Page>UPS</Page>
-						<Column>0</Column>
-						<Row>4</Row>
-					</Position>
-				</Positions>
-			</Display>
-			<Measurement>
-				<Type>number</Type>
-			</Measurement>
-		</Param>
 	</Params>
 	<Groups>
-		<Group id="1000">
+		<Group id="1">
 			<Name>getGeneralParams</Name>
 			<Description>pools the General Params</Description>
 			<Type>poll</Type>
 			<Content>
-				<Param>1000</Param>
-				<Param>1001</Param>
-				<Param>1002</Param>
-				<Param>1003</Param>
+				<Param>1</Param>
+				<Param>2</Param>
+				<Param>3</Param>
+				<Param>4</Param>
+				<Param>5</Param>
+				<Param>6</Param>
+				<Param>7</Param>
+				<Param>8</Param>
+				<Param>9</Param>
 			</Content>
 		</Group>
-		<Group id="2000">
+		<Group id="1000">
 			<Name>getInterfaceParams</Name>
-			<Description>pools the Interface Params</Description>
+			<Description>pools the Interface Params and pools the Extended Interface Table</Description>
 			<Type>poll</Type>
 			<Content>
+				<Param>1000</Param>
 				<Param>2000</Param>
-			</Content>
-		</Group>
-		<Group id="3000">
-			<Name>GetUPSParas</Name>
-			<Description>pools the UPS Extended Params</Description>
-			<Type>poll</Type>
-			<Content>
-				<Param>3000</Param>
-				<Param>3001</Param>
-				<Param>3002</Param>
-				<Param>3003</Param>
-				<Param>3004</Param>
-			</Content>
-		</Group>
-		<Group id="2500">
-			<Name>getExtendedInterfaceParams</Name>
-			<Description>pools the Extended Interface Table</Description>
-			<Type>poll</Type>
-			<Content>
-				<Param>2500</Param>
 			</Content>
 		</Group>
 	</Groups>
@@ -1862,15 +1969,13 @@ bandwidth, this object should be zero.]]>
 			<Time initial="true">1000</Time>
 			<Interval>75</Interval>
 			<Content>
+				<Group>1</Group>
 				<Group>1000</Group>
-				<Group>2000</Group>
-				<Group>2500</Group>
-				<Group>3000</Group>
 			</Content>
 		</Timer>
 	</Timers>
 	<QActions>
-		<QAction id="1" name="Extends the Extended Interface Table for Calculated Speed" encoding="csharp" triggers="2500" row="false"></QAction>
+		<QAction id="1" name="Extends the Extended Interface Table for Calculated Speed" encoding="csharp" triggers="2000" row="false"></QAction>
 	</QActions>
 	<PortSettings name="SNMP Connection">
 		<BusAddress>
@@ -1884,7 +1989,8 @@ bandwidth, this object should be zero.]]>
 		<Branches>
 			<Branch id="1">
 				<Comment>
-					AmerMO-SLC-C-TrainingExerciseSnmpEatonBladeUps Branch</Comment>
+					AmerMO-SLC-C-TrainingExerciseSnmpEatonBladeUps Branch
+				</Comment>
 				<SystemVersions>
 					<SystemVersion id="0">
 						<MajorVersions>
