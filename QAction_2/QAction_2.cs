@@ -22,8 +22,7 @@ public static class QAction
 
         try
         {
-            object[] ifKeys = GetIfTableKeys(protocol);
-            object[] ifSpeeds = GetIfTableSpeeds(protocol);
+            var (ifKeys, ifSpeeds) = GetIfTableData(protocol);
 
             if (ifKeys == null || ifSpeeds == null || ifKeys.Length == 0)
             {
@@ -33,17 +32,9 @@ public static class QAction
 
             Dictionary<string, double> highSpeedLookup = BuildHighSpeedLookup(protocol);
 
-            object[] resultKeys = new object[ifKeys.Length];
-            object[] resultValues = new object[ifKeys.Length];
+            var (resultKeys,resultValues) = BuildResultArrays(protocol, ifKeys, ifSpeeds, highSpeedLookup);
 
-            for (int i = 0; i < ifKeys.Length; i++)
-            {
-                string key = Convert.ToString(ifKeys[i]);
-                double rawSpeed = ifSpeeds[i] != null ? Convert.ToDouble(ifSpeeds[i]) : double.NaN;
 
-                resultKeys[i] = key;
-                resultValues[i] = ResolveSpeed(protocol, key, rawSpeed, highSpeedLookup);
-            }
 
             protocol.NotifyProtocol((int)NotifyType.NT_FILL_ARRAY_WITH_COLUMN,new object[] { SLParameter.Iftable.tablePid, SLParameter.Iftable.Pid.ifhighspeedcalculated, true },new object[] { resultKeys, resultValues });
 
@@ -53,40 +44,29 @@ public static class QAction
             protocol.Log($"QA{protocol.QActionID}|{protocol.GetTriggerParameter()}|Run|Exception thrown:{Environment.NewLine}{ex}", LogType.Error, LogLevel.NoLogging);
         }
     }
-
-
-    private static object[] GetIfTableKeys(SLProtocolExt protocol)
+     private static (object[] keys, object[] speeds) GetIfTableData(SLProtocolExt protocol)
     {
-        var columns = (object[])protocol.NotifyProtocol((int)NotifyType.NT_GET_TABLE_COLUMNS,SLParameter.Iftable.tablePid,new uint[] { SLParameter.Iftable.Idx.iftableindex });
+        var columns = (object[])protocol.NotifyProtocol(
+            (int)NotifyType.NT_GET_TABLE_COLUMNS,
+            SLParameter.Iftable.tablePid,
+            new uint[] { SLParameter.Iftable.Idx.iftableindex, SLParameter.Iftable.Idx.iftablespeed });
 
-        return columns?[0] as object[];
+        return (columns?[0] as object[], columns?[1] as object[]);
     }
 
-    private static object[] GetIfTableSpeeds(SLProtocolExt protocol)
+    private static (object[] keys, object[] speeds) GetIfxTableData(SLProtocolExt protocol)
     {
-        var columns = (object[])protocol.NotifyProtocol((int)NotifyType.NT_GET_TABLE_COLUMNS,SLParameter.Iftable.tablePid,new uint[] { SLParameter.Iftable.Idx.iftablespeed });
+        var columns = (object[])protocol.NotifyProtocol(
+            (int)NotifyType.NT_GET_TABLE_COLUMNS,
+            SLParameter.Ifxtable.tablePid,
+            new uint[] { SLParameter.Ifxtable.Idx.ifxtableinstance, SLParameter.Ifxtable.Idx.ifxifhighspeed_2002 });
 
-        return columns?[0] as object[];
-    }
-
-    private static object[] GetIfxTableKeys(SLProtocolExt protocol)
-    {
-        var columns = (object[])protocol.NotifyProtocol((int)NotifyType.NT_GET_TABLE_COLUMNS,SLParameter.Ifxtable.tablePid,new uint[] { SLParameter.Ifxtable.Idx.ifxtableinstance });
-
-        return columns?[0] as object[];
-    }
-
-    private static object[] GetIfxTableSpeeds(SLProtocolExt protocol)
-    {
-        var columns = (object[])protocol.NotifyProtocol((int)NotifyType.NT_GET_TABLE_COLUMNS,SLParameter.Ifxtable.tablePid,new uint[] { SLParameter.Ifxtable.Idx.ifxifhighspeed_2002 });
-
-        return columns?[0] as object[];
+        return (columns?[0] as object[], columns?[1] as object[]);
     }
     private static Dictionary<string, double> BuildHighSpeedLookup(SLProtocolExt protocol)
     {
 
-        object[] xKeys = GetIfxTableKeys(protocol);
-        object[] xSpeeds = GetIfxTableSpeeds(protocol);
+        var (xKeys, xSpeeds) = GetIfxTableData(protocol);
 
         var lookup = new Dictionary<string, double>();
 
@@ -102,7 +82,6 @@ public static class QAction
 
         return lookup;
     }
-
     private static double ResolveSpeed(
         SLProtocolExt protocol,
         string key,
@@ -122,6 +101,22 @@ public static class QAction
         }
 
         return rawSpeed / BpsPerMbps;
+    }
+    private static (object[] resultKeys, object[] resultValues) BuildResultArrays(SLProtocolExt protocol, object[] ifKeys, object[] ifSpeeds, Dictionary<string, double> highSpeedLookup)
+    {
+        object[] resultKeys = new object[ifKeys.Length];
+        object[] resultValues = new object[ifKeys.Length];
+
+        for (int i = 0; i < ifKeys.Length; i++) { 
+        
+            string key = Convert.ToString(ifKeys[i]);
+            double rawSpeed = ifSpeeds[i] != null ? Convert.ToDouble(ifSpeeds[i]) : double.NaN; 
+
+            resultKeys[i] = key;
+            resultValues[i] = ResolveSpeed(protocol,key,rawSpeed,highSpeedLookup);
+        
+        }
+        return (resultKeys, resultValues);
     }
 
 }

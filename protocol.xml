@@ -18,7 +18,8 @@
 	<DeviceOID>1</DeviceOID>
 	<ElementType>Manager</ElementType>
 	<Type relativeTimers="true">snmpv2</Type>
-	<!-- SuppressValidator 1.22.6 Web interface-->
+	<!-- SuppressValidator 1.22.6 webinterface
+ -->
 	<Display defaultPage="General" pageOrder="General;Interface Table;UPS" wideColumnPages=""/>
 	<!-- /SuppressValidator 1.22.6 -->
 	<SNMP includepages="true">auto</SNMP>
@@ -68,9 +69,9 @@ and networking software.]]>
 				<Type>string</Type>
 			</Measurement>
 		</Param>
-		<Param id="2" trending="false">
+		<Param id="2" trending="true">
 			<Name>sysUpTime</Name>
-			<Description>Raw System Uptime in Timeticks (Hundredths of a Second)</Description>
+			<Description>System Uptime</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[The time (in hundredths of a second) since the
@@ -83,31 +84,13 @@ re-initialized.]]>
 				<RawType>numeric text</RawType>
 				<Type>double</Type>
 				<LengthType>next param</LengthType>
+				<Sequence noset="true">div:100</Sequence>
 			</Interprete>
 			<SNMP>
 				<Enabled>true</Enabled>
 				<OID type="complete">1.3.6.1.2.1.1.3.0</OID>
 				<Type>timeticks</Type>
 			</SNMP>
-			<Display>
-				<RTDisplay>false</RTDisplay>
-			</Display>
-			<Measurement>
-				<Type>number</Type>
-			</Measurement>
-		</Param>
-		<Param id="3" trending="true">
-			<Name>SystemUpTime</Name>
-			<Description>System Uptime Formatted as Duration</Description>
-			<Information>
-				<Subtext>Formatted system up time (d,h,m,s).</Subtext>
-			</Information>
-			<Type>read</Type>
-			<Interprete>
-				<RawType>numeric text</RawType>
-				<LengthType>next param</LengthType>
-				<Type>double</Type>
-			</Interprete>
 			<Display>
 				<RTDisplay>true</RTDisplay>
 				<Positions>
@@ -209,9 +192,9 @@ re-initialized.]]>
 			<ArrayOptions index="0">
 				<ColumnOption idx="0" pid="1001" type="snmp"   options="" />
 				<ColumnOption idx="1" pid="1002" type="snmp"   options="" />
-				<ColumnOption idx="2" pid="1003" type="snmp"   options="" />
+				<ColumnOption idx="2" pid="1003" type="snmp"   options=";enableHeaderSum;enableHistogram;enableHeatmap" />
 				<ColumnOption idx="3" pid="1004" type="snmp"   options="" />
-				<ColumnOption idx="4" pid="1005" type="retrieved" options="" />
+				<ColumnOption idx="4" pid="1006" type="retrieved" options="" />
 			</ArrayOptions>
 			<Information>
 				<Subtext>
@@ -234,7 +217,7 @@ is given by the value of ifNumber.]]>
 				</Positions>
 			</Display>
 			<Measurement>
-				<Type options="tab=columns:1001|0-1002|1-1003|2-1004|3-1005|4,width:200-170-250-270-350,sort:INT-INT-INT-INT-INT,lines:20,filter:true">table</Type>
+				<Type options="tab=columns:1001|0-1002|1-1003|2-1004|3-1006|4,width:200-170-250-250-250,sort:INT-INT-INT-INT-INT,lines:20,filter:true">table</Type>
 			</Measurement>
 		</Param>
 		<Param id="1001" trending="false">
@@ -1392,7 +1375,7 @@ IANAifType textual convention.]]>
 		</Param>
 		<Param id="1003" trending="false">
 			<Name>ifTableSpeed</Name>
-			<Description>Interface Raw Speed in bps (Iftable)</Description>
+			<Description>Interface Speed (Iftable)</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[An estimate of the interface's current bandwidth in
@@ -1405,7 +1388,8 @@ object then this object should report its maximum
 value (4,294,967,295) and ifHighSpeed must be used to
 report the interace's speed.  For a sub-layer which
 has no concept of bandwidth, this object should be
-zero.]]>	</Subtext>
+zero.]]>
+				</Subtext>
 			</Information>
 			<Type>read</Type>
 			<Interprete>
@@ -1444,7 +1428,7 @@ zero.]]>	</Subtext>
 		</Param>
 		<Param id="1004" trending="false">
 			<Name>ifTableAdminStatus</Name>
-			<Description>Interface Administrative State (Iftable)</Description>
+			<Description>Interface Admin State (Iftable)</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[The desired state of the interface.  The testing(3)
@@ -1472,6 +1456,12 @@ the down(2) state).]]>
 			<Display>
 				<RTDisplay>true</RTDisplay>
 			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>1</Normal>
+				<WaH>3</WaH>
+				<CH>2</CH>
+			</Alarm>
 			<Measurement>
 				<Type>discreet</Type>
 				<Discreets>
@@ -1489,10 +1479,47 @@ the down(2) state).]]>
 					</Discreet>
 				</Discreets>
 			</Measurement>
-		</Param>		
-		<Param id="1005" trending="false">
+		</Param>
+		<Param id="1005" snmpSetAndGet="true">
+			<Name>ifTableAdminStatus</Name>
+			<Description>Interface Admin State (Iftable)</Description>
+			<Type>write</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.2.1.2.2.1.7</OID>
+				<Type>integer</Type>
+			</SNMP>
+			<Display>
+				<!-- SuppressValidator 2.7.5 Setting Admin State -->
+				<RTDisplay>true</RTDisplay>
+				<!-- /SuppressValidator 2.7.5 -->
+			</Display>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Up</Display>
+						<Value>1</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Down</Display>
+						<Value>2</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Testing</Display>
+						<Value>3</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="1006" trending="false">
 			<Name>ifHighSpeedCalculated</Name>
-			<Description>Calculated Interface Speed in Mbps or Gbps (Iftable)</Description>
+			<Description>Calculated Interface Speed (Iftable)</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[An estimate of the interface's current bandwidth in
@@ -1512,7 +1539,6 @@ bandwidth, this object should be zero.]]>
 				<Type>double</Type>
 				<LengthType>next param</LengthType>
 			</Interprete>
-			<!-- SuppressValidator 2.9.7 Unit defined in QAction -->
 			<Display>
 				<RTDisplay>true</RTDisplay>
 				<Units>Mbps</Units>
@@ -1521,7 +1547,18 @@ bandwidth, this object should be zero.]]>
 					<High>4294967295</High>
 				</Range>
 			</Display>
-			<!-- /SuppressValidator 2.9.7 -->
+			<Alarm>
+				<Monitored>true</Monitored>
+				<CL>0</CL>
+				<MaL>1</MaL>
+				<MiL>10</MiL>
+				<WaL>100</WaL>
+				<Normal>1000</Normal>
+				<WaH>2000</WaH>
+				<MiH>3000</MiH>
+				<MaH>3500</MaH>
+				<CH>4000</CH>
+			</Alarm>
 			<Measurement>
 				<Type>number</Type>
 			</Measurement>
@@ -1551,7 +1588,7 @@ contains additional objects for the interface table.]]>
 					<Position>
 						<Page>Interface Table</Page>
 						<Column>0</Column>
-						<Row>7</Row>
+						<Row>4</Row>
 					</Position>
 				</Positions>
 			</Display>
@@ -1619,7 +1656,7 @@ bandwidth, this object should be zero.]]>
 		</Param>
 		<Param id="3000" trending="true">
 			<Name>xupsInputFrequency</Name>
-			<Description>UPS Input Line Frequency in Hz</Description>
+			<Description>UPS Input Line Frequency</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[The utility line frequency in tenths of Hz.]]>
@@ -1759,7 +1796,7 @@ bandwidth, this object should be zero.]]>
 		</Param>
 		<Param id="3003" trending="true">
 			<Name>xupsOutputFrequency</Name>
-			<Description>UPS Output Frequency in Hz</Description>
+			<Description>UPS Output Frequency</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[The measured UPS output frequency in tenths of Hz.]]>
@@ -1808,7 +1845,6 @@ bandwidth, this object should be zero.]]>
 				<Type>number</Type>
 			</Measurement>
 		</Param>
-		
 		<Param id="3004" trending="true">
 			<Name>xupsBatCapacity</Name>
 			<Description>UPS Battery Charge Percentage</Description>
@@ -1857,7 +1893,6 @@ bandwidth, this object should be zero.]]>
 		</Param>
 	</Params>
 	<QActions>
-		<QAction id="1" name="Format System Up Time" encoding="csharp" triggers ="2"/>
 		<QAction id="2" name="Calculate Interface Speed" encoding="csharp" triggers="2000"/>
 	</QActions>
 	<Groups>
@@ -1873,31 +1908,24 @@ bandwidth, this object should be zero.]]>
 			</Content>
 		</Group>
 		<Group id="2">
-			<Name>Interface Table</Name>
-			<Description>Interface Table</Description>
+			<Name>Tables</Name>
+			<Description>Tables</Description>
 			<Type>poll</Type>
 			<Content>
 				<Param>1000</Param>
+				<Param>2000</Param>
 			</Content>
 		</Group>
 		<Group id="3">
 			<Name>UPS Parameters</Name>
 			<Description>UPS Parameters</Description>
 			<Type>poll</Type>
-			<Content>
+			<Content options="multipleget">
 				<Param>3000</Param>
 				<Param>3001</Param>
 				<Param>3002</Param>
 				<Param>3003</Param>
 				<Param>3004</Param>
-			</Content>
-		</Group>
-		<Group id="4">
-			<Name>Extended Interface Table</Name>
-			<Description>Extended Interface Table</Description>
-			<Type>poll</Type>
-			<Content>
-				<Param>2000</Param>
 			</Content>
 		</Group>
 	</Groups>
@@ -1911,26 +1939,12 @@ bandwidth, this object should be zero.]]>
 				<Id>1</Id>
 			</Content>
 		</Trigger>
-		<Trigger id="2">
-			<Name>On sysUpTime Change</Name>
-			<On id="2">parameter</On>
-			<Time>change</Time>
-			<Type>action</Type>
-			<Content>
-				<Id>3</Id>
-			</Content>
-		</Trigger>
 	</Triggers>
 	<Actions>
 		<Action id="1">
 			<Name>After Startup Group</Name>
 			<On id="2">group</On>
 			<Type>execute next</Type>
-		</Action>
-		<Action id="3">
-			<Name>Run Format UpTime QAction</Name>
-			<On id="2">parameter</On>
-			<Type>run actions</Type>
 		</Action>
 	</Actions>
 	<Timers>
@@ -1941,12 +1955,17 @@ bandwidth, this object should be zero.]]>
 			<Content>
 				<Group>1</Group>
 				<Group>2</Group>
-				<Group>4</Group>
 				<Group>3</Group>
 			</Content>
 		</Timer>
 	</Timers>
 	<PortSettings name="SNMP Connection">
+		<BusAddress>
+			<Disabled>true</Disabled>
+		</BusAddress>
+		<IPport>
+			<DefaultValue>161</DefaultValue>
+		</IPport>
 	</PortSettings>
 	<VersionHistory>
 		<Branches>

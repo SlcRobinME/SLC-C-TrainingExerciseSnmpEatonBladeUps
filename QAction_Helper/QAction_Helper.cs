@@ -18,11 +18,6 @@ public static class Parameter
 	public const int sysuptime_2 = 2;
 	/// <summary>PID: 2 | Type: read</summary>
 	public const int sysuptime = 2;
-	/// <summary>PID: 3 | Type: read</summary>
-	[EditorBrowsable(EditorBrowsableState.Never)]
-	public const int systemuptime_3 = 3;
-	/// <summary>PID: 3 | Type: read</summary>
-	public const int systemuptime = 3;
 	/// <summary>PID: 4 | Type: read</summary>
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public const int xupsidentmanufacturer_4 = 4;
@@ -60,6 +55,11 @@ public static class Parameter
 	public const int xupsbatcapacity = 3004;
 	public class Write
 	{
+		/// <summary>PID: 1005 | Type: write</summary>
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public const int iftableadminstatus_1005 = 1005;
+		/// <summary>PID: 1005 | Type: write</summary>
+		public const int iftableadminstatus = 1005;
 	}
 	public class Iftable
 	{
@@ -91,11 +91,11 @@ public static class Parameter
 			public const int iftableadminstatus_1004 = 1004;
 			/// <summary>PID: 1004 | Type: read</summary>
 			public const int iftableadminstatus = 1004;
-			/// <summary>PID: 1005 | Type: read</summary>
+			/// <summary>PID: 1006 | Type: read</summary>
 			[EditorBrowsable(EditorBrowsableState.Never)]
-			public const int ifhighspeedcalculated_1005 = 1005;
-			/// <summary>PID: 1005 | Type: read</summary>
-			public const int ifhighspeedcalculated = 1005;
+			public const int ifhighspeedcalculated_1006 = 1006;
+			/// <summary>PID: 1006 | Type: read</summary>
+			public const int ifhighspeedcalculated = 1006;
 			public class Write
 			{
 			}
@@ -124,7 +124,7 @@ public static class Parameter
 			public const int iftableadminstatus = 3;
 			/// <summary>IDX: 4 | Type: read</summary>
 			[EditorBrowsable(EditorBrowsableState.Never)]
-			public const int ifhighspeedcalculated_1005 = 4;
+			public const int ifhighspeedcalculated_1006 = 4;
 			/// <summary>IDX: 4 | Type: read</summary>
 			public const int ifhighspeedcalculated = 4;
 		}
@@ -170,6 +170,8 @@ public static class Parameter
 }
 public class WriteParameters
 {
+	/// <summary>PID: 1005  | Type: write | DISCREETS: Up = 1, Down = 2, Testing = 3</summary>
+	public System.Object Iftableadminstatus {get { return Protocol.GetParameter(1005); }set { Protocol.SetParameter(1005, value); }}
 	public SLProtocolExt Protocol;
 	public WriteParameters(SLProtocolExt protocol)
 	{
@@ -186,8 +188,6 @@ public interface SLProtocolExt : SLProtocol
 	object Sysdescr { get; set; }
 	object Sysuptime_2 { get; set; }
 	object Sysuptime { get; set; }
-	object Systemuptime_3 { get; set; }
-	object Systemuptime { get; set; }
 	object Xupsidentmanufacturer_4 { get; set; }
 	object Xupsidentmanufacturer { get; set; }
 	object Xupsidentmodel_5 { get; set; }
@@ -200,7 +200,8 @@ public interface SLProtocolExt : SLProtocol
 	object Iftablespeed { get; set; }
 	object Iftableadminstatus_1004 { get; set; }
 	object Iftableadminstatus { get; set; }
-	object Ifhighspeedcalculated_1005 { get; set; }
+	object Iftableadminstatus_1005 { get; set; }
+	object Ifhighspeedcalculated_1006 { get; set; }
 	object Ifhighspeedcalculated { get; set; }
 	object Ifxtableinstance_2001 { get; set; }
 	object Ifxtableinstance { get; set; }
@@ -234,11 +235,6 @@ public class ConcreteSLProtocolExt : ConcreteSLProtocol, SLProtocolExt
 	public System.Object Sysuptime_2 {get { return GetParameter(2); }set { SetParameter(2, value); }}
 	/// <summary>PID: 2  | Type: read</summary>
 	public System.Object Sysuptime {get { return GetParameter(2); }set { SetParameter(2, value); }}
-	/// <summary>PID: 3  | Type: read</summary>
-	[EditorBrowsable(EditorBrowsableState.Never)]
-	public System.Object Systemuptime_3 {get { return GetParameter(3); }set { SetParameter(3, value); }}
-	/// <summary>PID: 3  | Type: read</summary>
-	public System.Object Systemuptime {get { return GetParameter(3); }set { SetParameter(3, value); }}
 	/// <summary>PID: 4  | Type: read</summary>
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public System.Object Xupsidentmanufacturer_4 {get { return GetParameter(4); }set { SetParameter(4, value); }}
@@ -269,11 +265,14 @@ public class ConcreteSLProtocolExt : ConcreteSLProtocol, SLProtocolExt
 	public System.Object Iftableadminstatus_1004 {get { return GetParameter(1004); }set { SetParameter(1004, value); }}
 	/// <summary>PID: 1004  | Type: read | DISCREETS: Up = 1, Down = 2, Testing = 3</summary>
 	public System.Object Iftableadminstatus {get { return GetParameter(1004); }set { SetParameter(1004, value); }}
-	/// <summary>PID: 1005  | Type: read</summary>
+	/// <summary>PID: 1005  | Type: write | DISCREETS: Up = 1, Down = 2, Testing = 3</summary>
 	[EditorBrowsable(EditorBrowsableState.Never)]
-	public System.Object Ifhighspeedcalculated_1005 {get { return GetParameter(1005); }set { SetParameter(1005, value); }}
-	/// <summary>PID: 1005  | Type: read</summary>
-	public System.Object Ifhighspeedcalculated {get { return GetParameter(1005); }set { SetParameter(1005, value); }}
+	public System.Object Iftableadminstatus_1005 {get { return GetParameter(1005); }set { SetParameter(1005, value); }}
+	/// <summary>PID: 1006  | Type: read</summary>
+	[EditorBrowsable(EditorBrowsableState.Never)]
+	public System.Object Ifhighspeedcalculated_1006 {get { return GetParameter(1006); }set { SetParameter(1006, value); }}
+	/// <summary>PID: 1006  | Type: read</summary>
+	public System.Object Ifhighspeedcalculated {get { return GetParameter(1006); }set { SetParameter(1006, value); }}
 	/// <summary>PID: 2001  | Type: read</summary>
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public System.Object Ifxtableinstance_2001 {get { return GetParameter(2001); }set { SetParameter(2001, value); }}
@@ -354,10 +353,10 @@ public class IftableQActionRow : QActionTableRow
 	public System.Object Iftableadminstatus_1004 { get { if (base.Columns.ContainsKey(3)) { return base.Columns[3]; } else { return null; } } set { if (base.Columns.ContainsKey(3)) { base.Columns[3] = value; } else { base.Columns.Add(3, value); } } }
 	/// <summary>PID: 1004 | Type: read</summary>
 	public System.Object Iftableadminstatus { get { if (base.Columns.ContainsKey(3)) { return base.Columns[3]; } else { return null; } } set { if (base.Columns.ContainsKey(3)) { base.Columns[3] = value; } else { base.Columns.Add(3, value); } } }
-	/// <summary>PID: 1005 | Type: read</summary>
+	/// <summary>PID: 1006 | Type: read</summary>
 	[EditorBrowsable(EditorBrowsableState.Never)]
-	public System.Object Ifhighspeedcalculated_1005 { get { if (base.Columns.ContainsKey(4)) { return base.Columns[4]; } else { return null; } } set { if (base.Columns.ContainsKey(4)) { base.Columns[4] = value; } else { base.Columns.Add(4, value); } } }
-	/// <summary>PID: 1005 | Type: read</summary>
+	public System.Object Ifhighspeedcalculated_1006 { get { if (base.Columns.ContainsKey(4)) { return base.Columns[4]; } else { return null; } } set { if (base.Columns.ContainsKey(4)) { base.Columns[4] = value; } else { base.Columns.Add(4, value); } } }
+	/// <summary>PID: 1006 | Type: read</summary>
 	public System.Object Ifhighspeedcalculated { get { if (base.Columns.ContainsKey(4)) { return base.Columns[4]; } else { return null; } } set { if (base.Columns.ContainsKey(4)) { base.Columns[4] = value; } else { base.Columns.Add(4, value); } } }
 	public IftableQActionRow() : base(0, 5) { }
 	public IftableQActionRow(System.Object[] oRow) : base(0, 5, oRow) { }
