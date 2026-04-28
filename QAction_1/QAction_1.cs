@@ -38,9 +38,9 @@ public static class QAction
         catch (Exception ex)
         {
             protocol.Log(
-                $"QAction|Exception: {ex.GetType().Name}: {ex.Message}\n{ex.StackTrace}",
-                LogType.Error,
-                LogLevel.NoLogging);
+            	$"QA{protocol.QActionID}|Run|Exception: {ex.GetType().Name}: {ex.Message}\n{ex.StackTrace}",
+            	LogType.Error,
+            	LogLevel.NoLogging);
         }
     }
 
@@ -79,7 +79,10 @@ public static class QAction
 
         if (!(columns[0] is object[] keys) || !(columns[1] is object[] speeds))
         {
-            protocol.Log("QAction|IfTable keys/speeds are null.", LogType.Error, LogLevel.NoLogging);
+            protocol.Log(
+            	$"QA{protocol.QActionID}|TryGetIfTableColumns|IfTable keys/speeds are null.",
+            	LogType.Error,
+            	LogLevel.NoLogging);
             return false;
         }
 
@@ -104,13 +107,19 @@ public static class QAction
 
         if (!(result is object[] columns) || columns.Length < 2)
         {
-            protocol.Log("QAction|IfxTable columns are null or invalid.", LogType.Error, LogLevel.NoLogging);
+            protocol.Log(
+                $"QA{protocol.QActionID}|TryGetIfxTableColumns|IfxTable columns are null or invalid.\".",
+                LogType.Error,
+                LogLevel.NoLogging);
             return false;
         }
 
         if (!(columns[0] is object[] keys) || !(columns[1] is object[] speeds))
         {
-            protocol.Log("QAction|IfxTable keys/speeds are null.", LogType.Error, LogLevel.NoLogging);
+            protocol.Log(
+                $"QA{protocol.QActionID}|TryGetIfxTableColumns|IfxTable keys/speeds are null.",
+                LogType.Error,
+                LogLevel.NoLogging);
             return false;
         }
 

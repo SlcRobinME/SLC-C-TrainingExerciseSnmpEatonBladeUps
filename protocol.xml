@@ -83,6 +83,9 @@ re-initialized.]]>
 				<RawType>numeric text</RawType>
 				<Type>double</Type>
 				<LengthType>next param</LengthType>
+				<Sequence noset="true">
+					div:100
+				</Sequence>
 			</Interprete>
 			<SNMP>
 				<Enabled>true</Enabled>
@@ -1970,8 +1973,8 @@ bandwidth, this object should be zero.]]>
 	</Groups>
 	<Timers>
 		<Timer id="1">
-			<Name>Fast Timer (1s)</Name>
-			<Time initial="true">1000</Time>
+			<Name>Timer (30s)</Name>
+			<Time initial="true">30000</Time>
 			<Interval>75</Interval>
 			<Content>
 				<Group>1</Group>
