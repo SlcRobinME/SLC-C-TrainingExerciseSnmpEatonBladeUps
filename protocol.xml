@@ -90,7 +90,7 @@ re-initialized.]]>
 				<Type>timeticks</Type>
 			</SNMP>
 			<Alarm>
-				<Monitored>false</Monitored>
+				<Monitored>true</Monitored>
 			</Alarm>
 			<Display>
 				<RTDisplay>true</RTDisplay>
@@ -430,7 +430,7 @@ is given by the value of ifNumber.]]>
 				</Positions>
 			</Display>
 			<Measurement>
-				<Type options="tab=columns:1001|0-1002|1-1003|2-1004|3-1005|4,width:118-195-100-115-107,sort:INT-INT-INT-INT-INT,lines:20,filter:true">table</Type>
+				<Type options="tab=columns:1001|0-1002|1-1003|2-1004|3-1005|4,width:118-195-116-115-116,sort:INT-INT-INT-INT-INT,lines:20,filter:true">table</Type>
 			</Measurement>
 		</Param>
 		<!-- /SuppressValidator 2.78.1 -->
@@ -1626,7 +1626,7 @@ zero.]]>
 				<Type>gauge32</Type>
 			</SNMP>
 			<Alarm>
-				<Monitored>false</Monitored>
+				<Monitored>true</Monitored>
 			</Alarm>
 			<Display>
 				<RTDisplay>true</RTDisplay>
@@ -1640,7 +1640,7 @@ zero.]]>
 				<Type>number</Type>
 			</Measurement>
 		</Param>
-		<Param id="1004" trending="true">
+		<Param id="1004" trending="false">
 			<Name>ifTableAdminStatus</Name>
 			<Description>Admin Status (If)</Description>
 			<Information>
@@ -1668,7 +1668,7 @@ the down(2) state).]]>
 				<Type>integer</Type>
 			</SNMP>
 			<Alarm>
-				<Monitored>false</Monitored>
+				<Monitored>true</Monitored>
 			</Alarm>
 			<Display>
 				<RTDisplay>true</RTDisplay>
@@ -1742,7 +1742,7 @@ the down(2) state).]]>
 				<LengthType>next param</LengthType>
 			</Interprete>
 			<Alarm>
-				<Monitored>false</Monitored>
+				<Monitored>true</Monitored>
 			</Alarm>
 			<Display>
 				<RTDisplay>true</RTDisplay>
@@ -1764,7 +1764,7 @@ the down(2) state).]]>
 			<Type>array</Type>
 			<ArrayOptions index="0">
 				<ColumnOption idx="0" pid="2001" type="snmp" options="" />
-				<ColumnOption idx="1" pid="2002" type="snmp" options=";disableHeaderSum;disableHistogram;disableHeatmap" />
+				<ColumnOption idx="1" pid="2002" type="snmp" options=";disableHeaderSum;enableHistogram;enableHeatmap" />
 			</ArrayOptions>
 			<Information>
 				<Subtext>
@@ -1788,7 +1788,7 @@ contains additional objects for the interface table.]]>
 				</Positions>
 			</Display>
 			<Measurement>
-				<Type options="tab=columns:2001|0-2002|1,width:113-100,sort:INT-INT,lines:20,filter:true">table</Type>
+				<Type options="tab=columns:2001|0-2002|1,width:113-116,sort:INT-INT,lines:20,filter:true">table</Type>
 			</Measurement>
 		</Param>
 		<!-- /SuppressValidator 2.78.1 -->
@@ -1849,7 +1849,7 @@ bandwidth, this object should be zero.]]>
 				<Type>gauge32</Type>
 			</SNMP>
 			<Alarm>
-				<Monitored>false</Monitored>
+				<Monitored>true</Monitored>
 			</Alarm>
 			<Display>
 				<RTDisplay>true</RTDisplay>

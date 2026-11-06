@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+	<TargetFramework>net48</TargetFramework>
+	<IsPackable>false</IsPackable>
+	<IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+	<ProjectReference Include="..\QAction_3\QAction_3.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+	<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
+	<PackageReference Include="MSTest.TestAdapter" Version="4.5.1" />
+	<PackageReference Include="MSTest.TestFramework" Version="4.5.1" />
+	<PackageReference Include="Skyline.DataMiner.Utils.UnitTestingFramework.Protocol" Version="1.0.4" />
+  </ItemGroup>
+  <ItemGroup>
+	<None Include="..\protocol.xml" Link="protocol.xml" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>
