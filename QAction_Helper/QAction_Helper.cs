@@ -184,6 +184,8 @@ public interface SLProtocolExt : SLProtocol
 	IftableQActionTable iftable { get; set; }
 	/// <summary>PID: 2000</summary>
 	IfxtableQActionTable ifxtable { get; set; }
+	object System__fixed_1 { get; set; }
+	object System__fixed_3 { get; set; }
 	object Systemdescription_10 { get; set; }
 	object Systemdescription { get; set; }
 	object Systemuptime_11 { get; set; }
@@ -225,6 +227,10 @@ public class ConcreteSLProtocolExt : ConcreteSLProtocol, SLProtocolExt
 	public IftableQActionTable iftable { get; set; }
 	/// <summary>PID: 2000</summary>
 	public IfxtableQActionTable ifxtable { get; set; }
+	/// <summary>PID: 1  | Type: fixed</summary>
+	public System.Object System__fixed_1 {get { return GetParameter(1); }set { SetParameter(1, value); }}
+	/// <summary>PID: 3  | Type: fixed</summary>
+	public System.Object System__fixed_3 {get { return GetParameter(3); }set { SetParameter(3, value); }}
 	/// <summary>PID: 10  | Type: read</summary>
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public System.Object Systemdescription_10 {get { return GetParameter(10); }set { SetParameter(10, value); }}

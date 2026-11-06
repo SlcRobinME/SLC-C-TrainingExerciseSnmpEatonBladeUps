@@ -27,6 +27,24 @@
 	</Compliancies>
 
 	<Params>
+		<Param id="1">
+			<Name>system</Name>
+			<Description>System</Description>
+			<Type>fixed</Type>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>0</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="begin">title</Type>
+			</Measurement>
+		</Param>
 		<Param id="10" trending="false">
 			<Name>systemDescription</Name>
 			<Description>Sysem Description</Description>
@@ -59,12 +77,30 @@ and networking software.]]>
 					<Position>
 						<Page>General</Page>
 						<Column>0</Column>
-						<Row>0</Row>
+						<Row>1</Row>
 					</Position>
 				</Positions>
 			</Display>
 			<Measurement>
-				<Type>string</Type>
+				<Type lines="3">string</Type>
+			</Measurement>
+		</Param>
+		<Param id="3">
+			<Name>system</Name>
+			<Description>System</Description>
+			<Type>fixed</Type>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>5</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="end">title</Type>
 			</Measurement>
 		</Param>
 		<Param id="11" trending="true">
@@ -99,7 +135,7 @@ re-initialized.]]>
 					<Position>
 						<Page>General</Page>
 						<Column>0</Column>
-						<Row>3</Row>
+						<Row>4</Row>
 					</Position>
 				</Positions>
 			</Display>
@@ -136,7 +172,7 @@ re-initialized.]]>
 					<Position>
 						<Page>General</Page>
 						<Column>0</Column>
-						<Row>1</Row>
+						<Row>2</Row>
 					</Position>
 				</Positions>
 			</Display>
@@ -173,7 +209,7 @@ re-initialized.]]>
 					<Position>
 						<Page>General</Page>
 						<Column>0</Column>
-						<Row>2</Row>
+						<Row>3</Row>
 					</Position>
 				</Positions>
 			</Display>
@@ -225,7 +261,7 @@ re-initialized.]]>
 					<Position>
 						<Page>General</Page>
 						<Column>0</Column>
-						<Row>7</Row>
+						<Row>9</Row>
 					</Position>
 				</Positions>
 			</Display>
@@ -272,7 +308,7 @@ re-initialized.]]>
 					<Position>
 						<Page>General</Page>
 						<Column>0</Column>
-						<Row>8</Row>
+						<Row>10</Row>
 					</Position>
 				</Positions>
 			</Display>
@@ -321,7 +357,7 @@ re-initialized.]]>
 					<Position>
 						<Page>General</Page>
 						<Column>0</Column>
-						<Row>9</Row>
+						<Row>11</Row>
 					</Position>
 				</Positions>
 			</Display>
@@ -373,7 +409,7 @@ re-initialized.]]>
 					<Position>
 						<Page>General</Page>
 						<Column>0</Column>
-						<Row>10</Row>
+						<Row>12</Row>
 					</Position>
 				</Positions>
 			</Display>
@@ -421,7 +457,7 @@ re-initialized.]]>
 					<Position>
 						<Page>General</Page>
 						<Column>0</Column>
-						<Row>11</Row>
+						<Row>13</Row>
 					</Position>
 				</Positions>
 			</Display>
@@ -469,7 +505,7 @@ is given by the value of ifNumber.]]>
 		<!-- /SuppressValidator 2.78.1 -->
 		<Param id="1001" trending="false">
 			<Name>ifTableIndex</Name>
-			<Description>Index [IDX] (If)</Description>
+			<Description>Index (If)</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[This is the SNMP instance of the table. Format: [ifIndex].
@@ -1765,7 +1801,7 @@ the down(2) state).]]>
 		</Param>
 		<Param id="1005" trending="true">
 			<Name>ifSpeed</Name>
-			<Description>Interface Speed</Description>
+			<Description>Interface Speed (If)</Description>
 			<Type>read</Type>
 			<Information>
 				<Subtext>
@@ -1832,7 +1868,7 @@ contains additional objects for the interface table.]]>
 		<!-- /SuppressValidator 2.78.1 -->
 		<Param id="2001" trending="false">
 			<Name>ifXTableInstance</Name>
-			<Description>Instance [IDX] (If X)</Description>
+			<Description>Instance (If X)</Description>
 			<Information>
 				<Subtext>
 					<![CDATA[This is the SNMP instance of the table. Format: [ifIndex].
