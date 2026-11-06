@@ -91,6 +91,7 @@ re-initialized.]]>
 			</SNMP>
 			<Alarm>
 				<Monitored>true</Monitored>
+				<Normal>0</Normal>
 			</Alarm>
 			<Display>
 				<RTDisplay>true</RTDisplay>
@@ -98,7 +99,7 @@ re-initialized.]]>
 					<Position>
 						<Page>General</Page>
 						<Column>0</Column>
-						<Row>1</Row>
+						<Row>3</Row>
 					</Position>
 				</Positions>
 			</Display>
@@ -135,7 +136,7 @@ re-initialized.]]>
 					<Position>
 						<Page>General</Page>
 						<Column>0</Column>
-						<Row>2</Row>
+						<Row>1</Row>
 					</Position>
 				</Positions>
 			</Display>
@@ -172,7 +173,7 @@ re-initialized.]]>
 					<Position>
 						<Page>General</Page>
 						<Column>0</Column>
-						<Row>3</Row>
+						<Row>2</Row>
 					</Position>
 				</Positions>
 			</Display>
@@ -202,6 +203,15 @@ re-initialized.]]>
 			<!-- SuppressValidator 2.5.1 No safe universal defaults: thresholds depend on UPS model and site policy -->
 			<Alarm>
 				<Monitored>true</Monitored>
+				<CL>350</CL>
+				<MaL>400</MaL>
+				<MiL>430</MiL>
+				<WaL>450</WaL>
+				<Normal>500</Normal>
+				<WaH>650</WaH>
+				<MiH>670</MiH>
+				<MaH>700</MaH>
+				<CH>750</CH>
 			</Alarm>
 			<!-- /SuppressValidator 2.5.1 -->
 			<Display>
@@ -245,6 +255,10 @@ re-initialized.]]>
 			<!-- SuppressValidator 2.5.1 No safe universal defaults: thresholds depend on UPS model and site policy -->
 			<Alarm>
 				<Monitored>true</Monitored>
+				<CL>0</CL>
+				<Normal>1</Normal>
+				<WaH>4</WaH>
+				<CH>5</CH>
 			</Alarm>
 			<!-- /SuppressValidator 2.5.1 -->
 			<!-- SuppressValidator 2.9.7 No units for this parameter -->
@@ -289,6 +303,11 @@ re-initialized.]]>
 			<!-- SuppressValidator 2.5.1 No safe universal defaults: thresholds depend on UPS model and site policy -->
 			<Alarm>
 				<Monitored>true</Monitored>
+				<Normal>0</Normal>
+				<WaH>80</WaH>
+				<MiH>90</MiH>
+				<MaH>100</MaH>
+				<CH>110</CH>
 			</Alarm>
 			<!-- /SuppressValidator 2.5.1 -->
 			<Display>
@@ -332,6 +351,15 @@ re-initialized.]]>
 			<!-- SuppressValidator 2.5.1 No safe universal defaults: thresholds depend on UPS model and site policy -->
 			<Alarm>
 				<Monitored>true</Monitored>
+				<CL>350</CL>
+				<MaL>400</MaL>
+				<MiL>430</MiL>
+				<WaL>450</WaL>
+				<Normal>500</Normal>
+				<WaH>650</WaH>
+				<MiH>670</MiH>
+				<MaH>700</MaH>
+				<CH>750</CH>
 			</Alarm>
 			<!-- /SuppressValidator 2.5.1 -->
 			<Display>
@@ -375,6 +403,11 @@ re-initialized.]]>
 			<!-- SuppressValidator 2.5.1 No safe universal defaults: thresholds depend on UPS model and site policy -->
 			<Alarm>
 				<Monitored>true</Monitored>
+				<CL>5</CL>
+				<MaL>10</MaL>
+				<MiL>20</MiL>
+				<WaL>30</WaL>
+				<Normal>100</Normal>
 			</Alarm>
 			<!-- /SuppressValidator 2.5.1 -->
 			<Display>
@@ -1627,6 +1660,7 @@ zero.]]>
 			</SNMP>
 			<Alarm>
 				<Monitored>true</Monitored>
+				<Normal>100000000</Normal>
 			</Alarm>
 			<Display>
 				<RTDisplay>true</RTDisplay>
@@ -1669,6 +1703,9 @@ the down(2) state).]]>
 			</SNMP>
 			<Alarm>
 				<Monitored>true</Monitored>
+				<Normal>1</Normal>
+				<MaH>2</MaH>
+				<CH>3</CH>
 			</Alarm>
 			<Display>
 				<RTDisplay>true</RTDisplay>
@@ -1743,6 +1780,7 @@ the down(2) state).]]>
 			</Interprete>
 			<Alarm>
 				<Monitored>true</Monitored>
+				<Normal>100000000</Normal>
 			</Alarm>
 			<Display>
 				<RTDisplay>true</RTDisplay>
@@ -1850,6 +1888,7 @@ bandwidth, this object should be zero.]]>
 			</SNMP>
 			<Alarm>
 				<Monitored>true</Monitored>
+				<Normal>100</Normal>
 			</Alarm>
 			<Display>
 				<RTDisplay>true</RTDisplay>
@@ -1877,7 +1916,7 @@ bandwidth, this object should be zero.]]>
 			<Name>getParams</Name>
 			<Description>Get Params</Description>
 			<Type>poll</Type>
-			<Content>
+			<Content multipleGet="true">
 				<Param>10</Param>
 				<Param>11</Param>
 				<Param>12</Param>
