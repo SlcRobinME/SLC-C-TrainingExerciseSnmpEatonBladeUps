@@ -11,31 +11,31 @@ using Skyline.DataMiner.Utils.Protocol.Extension;
 /// </summary>
 public static class QAction
 {
-	/// <summary>
-	/// The QAction entry point.
-	/// </summary>
-	/// <param name="protocol">Link with SLProtocol process.</param>
-	public static void Run(SLProtocol protocol)
-	{
-		try
-		{
-			var ifTableColumns = protocol.GetColumns(Parameter.Iftable.tablePid, new uint[] { Parameter.Iftable.indexColumn, Parameter.Iftable.Idx.iftablespeed_1003});
+    /// <summary>
+    /// The QAction entry point.
+    /// </summary>
+    /// <param name="protocol">Link with SLProtocol process.</param>
+    public static void Run(SLProtocol protocol)
+    {
+        try
+        {
+            var ifTableColumns = protocol.GetColumns(Parameter.Iftable.tablePid, new uint[] { Parameter.Iftable.indexColumn, Parameter.Iftable.Idx.iftablespeed_1003 });
 
-			if (ifTableColumns == null || ifTableColumns.Length != 2)
+            if (ifTableColumns == null || ifTableColumns.Length != 2)
             {
                 return;
             }
 
-			var ifKeys = ifTableColumns[0] as object[];
-			var ifSpeeds = ifTableColumns[1] as object[];
+            var ifKeys = ifTableColumns[0] as object[];
+            var ifSpeeds = ifTableColumns[1] as object[];
 
             if (ifKeys == null || ifSpeeds == null || ifKeys.Length == 0 || ifKeys.Length != ifSpeeds.Length)
                 return;
-            	
-            var highSpeeds = new Dictionary<string, object>();
-			var ifxTableColumns = protocol.GetColumns(Parameter.Ifxtable.tablePid, new uint[] { Parameter.Ifxtable.indexColumn, Parameter.Ifxtable.Idx.ifxifhighspeed_2002});
 
-			if (ifxTableColumns != null && ifxTableColumns.Length == 2)
+            var highSpeeds = new Dictionary<string, object>();
+            var ifxTableColumns = protocol.GetColumns(Parameter.Ifxtable.tablePid, new uint[] { Parameter.Ifxtable.indexColumn, Parameter.Ifxtable.Idx.ifxifhighspeed_2002 });
+
+            if (ifxTableColumns != null && ifxTableColumns.Length == 2)
             {
                 var ifxKeys = ifxTableColumns[0] as object[];
                 var ifxHighSpeeds = ifxTableColumns[1] as object[];
@@ -44,48 +44,53 @@ public static class QAction
                 {
                     for (int i = 0; i < ifxKeys.Length; i++)
                     {
-                        var key = Convert.ToString(ifxKeys[i]);
+                        var key = Convert.ToString(ifxKeys[i], CultureInfo.InvariantCulture);
                         highSpeeds[key] = ifxHighSpeeds[i];
                     }
                 }
             }
 
-			var rowKeys = new List<object>(ifKeys.Length);
-			var outValues = new List<object>(ifKeys.Length);
+            var rowKeys = new List<object>(ifKeys.Length);
+            var outValues = new List<object>(ifKeys.Length);
 
-			for(int i = 0; i < ifKeys.Length; i++)
-			{
-				var key = ifKeys[i];
-				rowKeys.Add(key);
+            for (int i = 0; i < ifKeys.Length; i++)
+            {
+                var key = Convert.ToString(ifKeys[i], CultureInfo.InvariantCulture);
+                if (String.IsNullOrEmpty(key) || ifSpeeds[i] == null)
+                {
+                    continue;
+                }
 
-				var speed = Convert.ToDouble(ifSpeeds[i]);
-				object value = null;
+                var speed = Convert.ToDouble(ifSpeeds[i], CultureInfo.InvariantCulture);
+                double value;
 
-				double result;
-				if (speed < UInt32.MaxValue)
+                if (speed < UInt32.MaxValue)
                 {
                     value = speed;
                 }
-				else
-				{
+                else
+                {
                     object highSpeed;
-                    if (highSpeeds.TryGetValue((string)key, out highSpeed) && highSpeed != null)
+                    if (!highSpeeds.TryGetValue(key, out highSpeed) || highSpeed == null)
                     {
-                        value = Convert.ToDouble(highSpeed);
+                        continue;
                     }
+
+                    value = Convert.ToDouble(highSpeed, CultureInfo.InvariantCulture);
                 }
-                
-				outValues.Add(value);
+
+                rowKeys.Add(key);
+                outValues.Add(value);
             }
 
-			protocol.SetColumns(
-				new int[] { Parameter.Iftable.tablePid, Parameter.Iftable.Pid.ifspeed_1005 },
-				new IEnumerable<object>[] { rowKeys, outValues }
-			);
+            protocol.SetColumns(
+                new int[] { Parameter.Iftable.tablePid, Parameter.Iftable.Pid.ifspeed_1005 },
+                new IEnumerable<object>[] { rowKeys, outValues }
+            );
         }
-		catch (Exception ex)
-		{
-			protocol.Log($"QA{protocol.QActionID}|{protocol.GetTriggerParameter()}|Run|Exception thrown:{Environment.NewLine}{ex}", LogType.Error, LogLevel.NoLogging);
-		}
-	}
+        catch (Exception ex)
+        {
+            protocol.Log($"QA{protocol.QActionID}|{protocol.GetTriggerParameter()}|Run|Exception thrown:{Environment.NewLine}{ex}", LogType.Error, LogLevel.NoLogging);
+        }
+    }
 }
