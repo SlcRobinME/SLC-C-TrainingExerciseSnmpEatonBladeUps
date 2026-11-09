@@ -2056,7 +2056,7 @@ bandwidth, this object should be zero.]]>
 
 	<QActions>
 		<QAction id="1" name="Precompiled Code" encoding="csharp" options="precompile" />
-		<QAction id="3" name="interfaceSpeed" encoding="csharp" triggers="1000;2000">
+		<QAction id="3" name="interfaceSpeed" encoding="csharp" triggers="2000">
 		</QAction>
 	</QActions>
 

@@ -19,23 +19,34 @@ public static class QAction
 	{
 		try
 		{
-			var ifKeys = protocol.GetKeys(Parameter.Iftable.tablePid);
-			var ifSpeeds = protocol.GetColumn(Parameter.Iftable.tablePid, Parameter.Iftable.Idx.iftablespeed_1003);
+			var ifTableColumns = protocol.GetColumns(Parameter.Iftable.tablePid, new uint[] { Parameter.Iftable.indexColumn, Parameter.Iftable.Idx.iftablespeed_1003});
 
-			if (ifKeys == null || ifSpeeds == null || ifKeys.Length == 0 || ifKeys.Length != ifSpeeds.Length)
+			if (ifTableColumns == null || ifTableColumns.Length != 2)
             {
                 return;
             }
 
-			var highSpeeds = new Dictionary<string, object>();
-			var ifxKeys = protocol.GetKeys(Parameter.Ifxtable.tablePid);
-			var ifxHighSpeeds = protocol.GetColumn(Parameter.Ifxtable.tablePid, Parameter.Ifxtable.Idx.ifxifhighspeed_2002);
+			var ifKeys = ifTableColumns[0] as object[];
+			var ifSpeeds = ifTableColumns[1] as object[];
 
-			if (ifxKeys != null && ifxHighSpeeds != null && ifxKeys.Length == ifxHighSpeeds.Length)
+            if (ifKeys == null || ifSpeeds == null || ifKeys.Length == 0 || ifKeys.Length != ifSpeeds.Length)
+                return;
+            	
+            var highSpeeds = new Dictionary<string, object>();
+			var ifxTableColumns = protocol.GetColumns(Parameter.Ifxtable.tablePid, new uint[] { Parameter.Ifxtable.indexColumn, Parameter.Ifxtable.Idx.ifxifhighspeed_2002});
+
+			if (ifxTableColumns != null && ifxTableColumns.Length == 2)
             {
-                for (int i = 0; i < ifxKeys.Length; i++)
+                var ifxKeys = ifxTableColumns[0] as object[];
+                var ifxHighSpeeds = ifxTableColumns[1] as object[];
+
+                if (ifxKeys != null && ifxHighSpeeds != null && ifxKeys.Length == ifxHighSpeeds.Length)
                 {
-                    highSpeeds[ifxKeys[i]] = ifxHighSpeeds[i];
+                    for (int i = 0; i < ifxKeys.Length; i++)
+                    {
+                        var key = Convert.ToString(ifxKeys[i]);
+                        highSpeeds[key] = ifxHighSpeeds[i];
+                    }
                 }
             }
 
@@ -58,7 +69,7 @@ public static class QAction
 				else
 				{
                     object highSpeed;
-                    if (highSpeeds.TryGetValue(key, out highSpeed) && highSpeed != null)
+                    if (highSpeeds.TryGetValue((string)key, out highSpeed) && highSpeed != null)
                     {
                         value = Convert.ToDouble(highSpeed);
                     }
