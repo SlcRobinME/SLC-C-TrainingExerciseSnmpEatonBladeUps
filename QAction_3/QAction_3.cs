@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Text;
 
 using Skyline.DataMiner.Scripting;
+using Skyline.DataMiner.Utils.Protocol.Extension;
 
 /// <summary>
 /// DataMiner QAction Class: copyAction.
@@ -18,41 +19,58 @@ public static class QAction
 	{
 		try
 		{
-			var index = protocol.RowKey();
+			var ifKeys = protocol.GetKeys(Parameter.Iftable.tablePid);
+			var ifSpeeds = protocol.GetColumn(Parameter.Iftable.tablePid, Parameter.Iftable.Idx.iftablespeed_1003);
 
-			var initialSpeed = protocol.GetParameterIndexByKey(Parameter.Iftable.tablePid, index, 3);
-
-			if (initialSpeed == null)
-			{
-                protocol.Log("ifSpeed is empty for row " + index, LogType.Information, LogLevel.NoLogging);
+			if (ifKeys == null || ifSpeeds == null || ifKeys.Length == 0 || ifKeys.Length != ifSpeeds.Length)
+            {
                 return;
             }
 
-			double result;
+			var highSpeeds = new Dictionary<string, object>();
+			var ifxKeys = protocol.GetKeys(Parameter.Ifxtable.tablePid);
+			var ifxHighSpeeds = protocol.GetColumn(Parameter.Ifxtable.tablePid, Parameter.Ifxtable.Idx.ifxifhighspeed_2002);
 
-			if((double)initialSpeed < UInt32.MaxValue)
-                result = (double)initialSpeed;
-			else
-			{
-                if (!protocol.Exists(Parameter.Ifxtable.tablePid, index))
+			if (ifxKeys != null && ifxHighSpeeds != null && ifxKeys.Length == ifxHighSpeeds.Length)
+            {
+                for (int i = 0; i < ifxKeys.Length; i++)
                 {
-                    protocol.Log("No matching ifXTable row for interface " + index, LogType.Information, LogLevel.NoLogging);
-                    return;
+                    highSpeeds[ifxKeys[i]] = ifxHighSpeeds[i];
                 }
-
-                object highSpeedValue = protocol.GetParameterIndexByKey(Parameter.Ifxtable.tablePid, index, 2);
-
-                if (highSpeedValue == null)
-                {
-                    protocol.Log("ifHighSpeed is empty for row " + index, LogType.Information, LogLevel.NoLogging);
-                    return;
-                }
-
-                result = (double)highSpeedValue;
             }
-			
-			protocol.SetParameterIndexByKey(Parameter.Iftable.tablePid, index, 5, result);
 
+			var rowKeys = new List<object>(ifKeys.Length);
+			var outValues = new List<object>(ifKeys.Length);
+
+			for(int i = 0; i < ifKeys.Length; i++)
+			{
+				var key = ifKeys[i];
+				rowKeys.Add(key);
+
+				var speed = Convert.ToDouble(ifSpeeds[i]);
+				object value = null;
+
+				double result;
+				if (speed < UInt32.MaxValue)
+                {
+                    value = speed;
+                }
+				else
+				{
+                    object highSpeed;
+                    if (highSpeeds.TryGetValue(key, out highSpeed) && highSpeed != null)
+                    {
+                        value = Convert.ToDouble(highSpeed);
+                    }
+                }
+                
+				outValues.Add(value);
+            }
+
+			protocol.SetColumns(
+				new int[] { Parameter.Iftable.tablePid, Parameter.Iftable.Pid.ifspeed_1005 },
+				new IEnumerable<object>[] { rowKeys, outValues }
+			);
         }
 		catch (Exception ex)
 		{

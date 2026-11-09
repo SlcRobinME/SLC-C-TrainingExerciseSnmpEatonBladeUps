@@ -18,7 +18,7 @@
 	<DeviceOID>1</DeviceOID>
 	<ElementType>Manager</ElementType>
 	<Type relativeTimers="true">snmpv2</Type>
-	<Display defaultPage="General" pageOrder="General;Interface" wideColumnPages=""/>
+	<Display defaultPage="General" pageOrder="General" wideColumnPages=""/>
 	<SNMP includepages="true">auto</SNMP>
 
 	<Compliancies>
@@ -28,7 +28,7 @@
 
 	<Params>
 		<Param id="1">
-			<Name>system</Name>
+			<Name>systemBegin</Name>
 			<Description>System</Description>
 			<Type>fixed</Type>
 			<Display>
@@ -43,6 +43,124 @@
 			</Display>
 			<Measurement>
 				<Type options="begin">title</Type>
+			</Measurement>
+		</Param>
+		<Param id="2">
+			<Name>systemEnd</Name>
+			<Description>System</Description>
+			<Type>fixed</Type>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>5</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="end">title</Type>
+			</Measurement>
+		</Param>
+		<Param id="3">
+			<Name>inputBegin</Name>
+			<Description>Input</Description>
+			<Type>fixed</Type>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>7</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="begin">title</Type>
+			</Measurement>
+		</Param>
+		<Param id="4">
+			<Name>inputEnd</Name>
+			<Description>Input</Description>
+			<Type>fixed</Type>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>10</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="end">title</Type>
+			</Measurement>
+		</Param>
+		<Param id="5">
+			<Name>outputBegin</Name>
+			<Description>Output</Description>
+			<Type>fixed</Type>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>12</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="begin">title</Type>
+			</Measurement>
+		</Param>
+		<Param id="6">
+			<Name>outputEnd</Name>
+			<Description>Output</Description>
+			<Type>fixed</Type>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>16</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="end">title</Type>
+			</Measurement>
+		</Param>
+		<Param id="7">
+			<Name>InterfaceSubpage</Name>
+			<Type>write</Type>
+			<Interprete>
+				<RawType>other</RawType>
+				<Type>string</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>18</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type width="110">pagebutton</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Interface...</Display>
+						<Value>Interface</Value>
+					</Discreet>
+				</Discreets>
 			</Measurement>
 		</Param>
 		<Param id="10" trending="false">
@@ -82,25 +200,7 @@ and networking software.]]>
 				</Positions>
 			</Display>
 			<Measurement>
-				<Type lines="3">string</Type>
-			</Measurement>
-		</Param>
-		<Param id="3">
-			<Name>system</Name>
-			<Description>System</Description>
-			<Type>fixed</Type>
-			<Display>
-				<RTDisplay>true</RTDisplay>
-				<Positions>
-					<Position>
-						<Page>General</Page>
-						<Column>0</Column>
-						<Row>5</Row>
-					</Position>
-				</Positions>
-			</Display>
-			<Measurement>
-				<Type options="end">title</Type>
+				<Type lines="2">string</Type>
 			</Measurement>
 		</Param>
 		<Param id="11" trending="true">
@@ -261,7 +361,7 @@ re-initialized.]]>
 					<Position>
 						<Page>General</Page>
 						<Column>0</Column>
-						<Row>9</Row>
+						<Row>8</Row>
 					</Position>
 				</Positions>
 			</Display>
@@ -308,7 +408,7 @@ re-initialized.]]>
 					<Position>
 						<Page>General</Page>
 						<Column>0</Column>
-						<Row>10</Row>
+						<Row>9</Row>
 					</Position>
 				</Positions>
 			</Display>
@@ -357,7 +457,7 @@ re-initialized.]]>
 					<Position>
 						<Page>General</Page>
 						<Column>0</Column>
-						<Row>11</Row>
+						<Row>13</Row>
 					</Position>
 				</Positions>
 			</Display>
@@ -409,7 +509,7 @@ re-initialized.]]>
 					<Position>
 						<Page>General</Page>
 						<Column>0</Column>
-						<Row>12</Row>
+						<Row>14</Row>
 					</Position>
 				</Positions>
 			</Display>
@@ -457,7 +557,7 @@ re-initialized.]]>
 					<Position>
 						<Page>General</Page>
 						<Column>0</Column>
-						<Row>13</Row>
+						<Row>15</Row>
 					</Position>
 				</Positions>
 			</Display>
@@ -579,11 +679,11 @@ IANAifType textual convention.]]>
 						<Value>3</Value>
 					</Discreet>
 					<Discreet>
-						<Display>DDN X 25</Display>
+						<Display>DDN x25</Display>
 						<Value>4</Value>
 					</Discreet>
 					<Discreet>
-						<Display>RFC 877 X 25</Display>
+						<Display>RFC 877 x25</Display>
 						<Value>5</Value>
 					</Discreet>
 					<Discreet>
@@ -635,7 +735,7 @@ IANAifType textual convention.]]>
 						<Value>17</Value>
 					</Discreet>
 					<Discreet>
-						<Display>Ds 1</Display>
+						<Display>DS 1</Display>
 						<Value>18</Value>
 					</Discreet>
 					<Discreet>
@@ -663,7 +763,7 @@ IANAifType textual convention.]]>
 						<Value>24</Value>
 					</Discreet>
 					<Discreet>
-						<Display>Eon</Display>
+						<Display>EON</Display>
 						<Value>25</Value>
 					</Discreet>
 					<Discreet>
@@ -671,7 +771,7 @@ IANAifType textual convention.]]>
 						<Value>26</Value>
 					</Discreet>
 					<Discreet>
-						<Display>Nsip</Display>
+						<Display>NSIP</Display>
 						<Value>27</Value>
 					</Discreet>
 					<Discreet>
@@ -683,11 +783,11 @@ IANAifType textual convention.]]>
 						<Value>29</Value>
 					</Discreet>
 					<Discreet>
-						<Display>Ds 3</Display>
+						<Display>DS 3</Display>
 						<Value>30</Value>
 					</Discreet>
 					<Discreet>
-						<Display>Sip</Display>
+						<Display>SIP</Display>
 						<Value>31</Value>
 					</Discreet>
 					<Discreet>
@@ -695,7 +795,7 @@ IANAifType textual convention.]]>
 						<Value>32</Value>
 					</Discreet>
 					<Discreet>
-						<Display>Rs 232</Display>
+						<Display>RS 232</Display>
 						<Value>33</Value>
 					</Discreet>
 					<Discreet>
@@ -723,7 +823,7 @@ IANAifType textual convention.]]>
 						<Value>39</Value>
 					</Discreet>
 					<Discreet>
-						<Display>X 25 Ple</Display>
+						<Display>x25 Ple</Display>
 						<Value>40</Value>
 					</Discreet>
 					<Discreet>
@@ -735,7 +835,7 @@ IANAifType textual convention.]]>
 						<Value>42</Value>
 					</Discreet>
 					<Discreet>
-						<Display>Smds Dxi</Display>
+						<Display>SMDS DXI</Display>
 						<Value>43</Value>
 					</Discreet>
 					<Discreet>
@@ -747,7 +847,7 @@ IANAifType textual convention.]]>
 						<Value>45</Value>
 					</Discreet>
 					<Discreet>
-						<Display>Hssi</Display>
+						<Display>HSSI</Display>
 						<Value>46</Value>
 					</Discreet>
 					<Discreet>
@@ -759,7 +859,7 @@ IANAifType textual convention.]]>
 						<Value>48</Value>
 					</Discreet>
 					<Discreet>
-						<Display>Aal 5</Display>
+						<Display>AAL 5</Display>
 						<Value>49</Value>
 					</Discreet>
 					<Discreet>
@@ -771,7 +871,7 @@ IANAifType textual convention.]]>
 						<Value>51</Value>
 					</Discreet>
 					<Discreet>
-						<Display>Smds Icip</Display>
+						<Display>SMDS Icip</Display>
 						<Value>52</Value>
 					</Discreet>
 					<Discreet>
@@ -807,7 +907,7 @@ IANAifType textual convention.]]>
 						<Value>60</Value>
 					</Discreet>
 					<Discreet>
-						<Display>Cct Emul</Display>
+						<Display>CCT Emul</Display>
 						<Value>61</Value>
 					</Discreet>
 					<Discreet>
@@ -835,7 +935,7 @@ IANAifType textual convention.]]>
 						<Value>67</Value>
 					</Discreet>
 					<Discreet>
-						<Display>Qllc</Display>
+						<Display>QLLC</Display>
 						<Value>68</Value>
 					</Discreet>
 					<Discreet>
@@ -851,7 +951,7 @@ IANAifType textual convention.]]>
 						<Value>71</Value>
 					</Discreet>
 					<Discreet>
-						<Display>Ibm 370 Par Chan</Display>
+						<Display>IBM 370 Par Chan</Display>
 						<Value>72</Value>
 					</Discreet>
 					<Discreet>
@@ -859,11 +959,11 @@ IANAifType textual convention.]]>
 						<Value>73</Value>
 					</Discreet>
 					<Discreet>
-						<Display>Dlsw</Display>
+						<Display>DLSW</Display>
 						<Value>74</Value>
 					</Discreet>
 					<Discreet>
-						<Display>Isdns</Display>
+						<Display>ISDNS</Display>
 						<Value>75</Value>
 					</Discreet>
 					<Discreet>
@@ -1943,7 +2043,7 @@ bandwidth, this object should be zero.]]>
 
 	<QActions>
 		<QAction id="1" name="Precompiled Code" encoding="csharp" options="precompile" />
-		<QAction id="3" name="interfaceSpeed" encoding="csharp" triggers="1003" row="true">
+		<QAction id="3" name="interfaceSpeed" encoding="csharp" triggers="1000;2000">
 		</QAction>
 	</QActions>
 
