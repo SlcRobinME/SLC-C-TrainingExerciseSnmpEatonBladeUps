@@ -29,7 +29,10 @@
 	<Params>
 		<Param id="1">
 			<Name>systemBegin</Name>
+			<!-- SuppressValidator 2.14.6 This is the only displayed description, no duplicates
+ -->
 			<Description>System</Description>
+			<!-- /SuppressValidator 2.14.6 -->
 			<Type>fixed</Type>
 			<Display>
 				<RTDisplay>true</RTDisplay>
@@ -47,7 +50,9 @@
 		</Param>
 		<Param id="2">
 			<Name>systemEnd</Name>
+			<!-- SuppressValidator 2.14.6 This isnt displayed  -->
 			<Description>System</Description>
+			<!-- /SuppressValidator 2.14.6 -->
 			<Type>fixed</Type>
 			<Display>
 				<RTDisplay>true</RTDisplay>
@@ -65,7 +70,9 @@
 		</Param>
 		<Param id="3">
 			<Name>inputBegin</Name>
+			<!-- SuppressValidator 2.14.6 Only one description is displayed -->
 			<Description>Input</Description>
+			<!-- /SuppressValidator 2.14.6 -->
 			<Type>fixed</Type>
 			<Display>
 				<RTDisplay>true</RTDisplay>
@@ -83,7 +90,9 @@
 		</Param>
 		<Param id="4">
 			<Name>inputEnd</Name>
+			<!-- SuppressValidator 2.14.6 Only one description is displayed -->
 			<Description>Input</Description>
+			<!-- /SuppressValidator 2.14.6 -->
 			<Type>fixed</Type>
 			<Display>
 				<RTDisplay>true</RTDisplay>
@@ -101,7 +110,9 @@
 		</Param>
 		<Param id="5">
 			<Name>outputBegin</Name>
+			<!-- SuppressValidator 2.14.6 Only one description is displayed -->
 			<Description>Output</Description>
+			<!-- /SuppressValidator 2.14.6 -->
 			<Type>fixed</Type>
 			<Display>
 				<RTDisplay>true</RTDisplay>
@@ -119,7 +130,9 @@
 		</Param>
 		<Param id="6">
 			<Name>outputEnd</Name>
+			<!-- SuppressValidator 2.14.6 Only one description is displayed -->
 			<Description>Output</Description>
+			<!-- /SuppressValidator 2.14.6 -->
 			<Type>fixed</Type>
 			<Display>
 				<RTDisplay>true</RTDisplay>
